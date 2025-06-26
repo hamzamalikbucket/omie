@@ -45,6 +45,9 @@ class AuthenticationView extends StatelessWidget {
             AuthenticationStatus.navigatingToEmailSignIn) {
           // Navigate to the new sign-in screen
           Navigator.of(context).pushNamed(AppRoutes.signin);
+        } else if (state.status == AuthenticationStatus.navigatingToSignUp) {
+          // Navigate to the signup screen
+          Navigator.of(context).pushNamed(AppRoutes.signup);
         }
       },
       child: Scaffold(
@@ -58,10 +61,13 @@ class AuthenticationView extends StatelessWidget {
               children: [
                 // Logo section at the top
                 _buildLogoSection(theme),
-
-                Expanded(
-                  flex: 1,
-                  child: Container(),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 24.h),
+                  width: 375.w,
+                  height: 230.h,
+                  child: Image.asset(
+                    'assets/images/welcome_icon.png',
+                  ),
                 ),
 
                 // Main container with circular design element
@@ -131,7 +137,7 @@ class AuthenticationView extends StatelessWidget {
   Widget _buildAuthenticationContainer(YouthYogaTheme theme) {
     return Container(
       width: 375.w,
-      height: 372.h,
+      height: 350.h,
       decoration: BoxDecoration(
         color: theme.primaryBackground,
       ),

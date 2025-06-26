@@ -28,8 +28,8 @@ class WelcomeView extends StatelessWidget {
     return BlocListener<WelcomeBloc, WelcomeState>(
       listener: (context, state) {
         if (state.status == WelcomeStatus.navigatingToHome) {
-          // Navigate to authentication screen
-          Navigator.of(context).pushNamed(AppRoutes.authentication);
+          // Navigate to onboarding screen
+          Navigator.of(context).pushNamed(AppRoutes.onboarding);
         } else if (state.status == WelcomeStatus.navigatingToSignIn) {
           // Navigate to authentication screen
           Navigator.of(context).pushNamed(AppRoutes.authentication);

@@ -58,10 +58,10 @@ class AuthenticationBloc
   ) async {
     emit(state.copyWith(status: AuthenticationStatus.loading));
 
-    // TODO: Navigate to sign up screen
+    // Navigate to sign up screen
     await Future.delayed(const Duration(milliseconds: 500));
 
-    emit(state.copyWith(status: AuthenticationStatus.initial));
+    emit(state.copyWith(status: AuthenticationStatus.navigatingToSignUp));
   }
 
   Future<void> _onNavigateToEmailSignIn(

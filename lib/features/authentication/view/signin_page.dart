@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/theme/app_theme.dart';
+import '../../../core/routes/app_routes.dart';
 import '../bloc/signin_bloc.dart';
 
 class SigninPage extends StatelessWidget {
@@ -50,11 +51,7 @@ class _SigninViewState extends State<SigninView> {
             ),
           );
         } else if (state.status == SigninStatus.forgotPassword) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Forgot password feature coming soon!'),
-            ),
-          );
+          Navigator.of(context).pushNamed(AppRoutes.forgotPassword);
         } else if (state.status == SigninStatus.googleSignin) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -62,11 +59,8 @@ class _SigninViewState extends State<SigninView> {
             ),
           );
         } else if (state.status == SigninStatus.navigateToSignUp) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Sign up feature coming soon!'),
-            ),
-          );
+          // Navigate to signup screen
+          Navigator.of(context).pushNamed(AppRoutes.signup);
         }
       },
       child: Scaffold(
@@ -277,18 +271,19 @@ class _SigninViewState extends State<SigninView> {
           ),
           child: Row(
             children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.w),
+              Padding(
+                padding: EdgeInsets.only(left: 12.w),
                 child: SvgPicture.asset(
                   'assets/images/envelope_email_icon.svg',
                   width: 20.w,
                   height: 20.w,
                   colorFilter: const ColorFilter.mode(
-                    Color(0xFF57534E),
+                    Color(0xFF57534E), // Gray/60 from Figma
                     BlendMode.srcIn,
                   ),
                 ),
               ),
+              SizedBox(width: 8.w),
               Expanded(
                 child: TextFormField(
                   controller: _emailController,
@@ -311,6 +306,8 @@ class _SigninViewState extends State<SigninView> {
                       height: 1.375,
                       letterSpacing: -0.007 * 16.sp,
                     ),
+                    filled: false,
+                    fillColor: Colors.transparent,
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
@@ -359,18 +356,19 @@ class _SigninViewState extends State<SigninView> {
           ),
           child: Row(
             children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.w),
+              Padding(
+                padding: EdgeInsets.only(left: 12.w),
                 child: SvgPicture.asset(
                   'assets/images/lock_password_icon.svg',
                   width: 20.w,
                   height: 20.w,
                   colorFilter: const ColorFilter.mode(
-                    Color(0xFF57534E),
+                    Color(0xFF57534E), // Gray/60 from Figma
                     BlendMode.srcIn,
                   ),
                 ),
               ),
+              SizedBox(width: 8.w),
               Expanded(
                 child: TextFormField(
                   controller: _passwordController,
@@ -396,6 +394,8 @@ class _SigninViewState extends State<SigninView> {
                       height: 1.375,
                       letterSpacing: -0.007 * 16.sp,
                     ),
+                    filled: false,
+                    fillColor: Colors.transparent,
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
@@ -409,14 +409,14 @@ class _SigninViewState extends State<SigninView> {
                       .read<SigninBloc>()
                       .add(const SigninPasswordVisibilityToggled());
                 },
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w),
+                child: Padding(
+                  padding: EdgeInsets.only(right: 12.w),
                   child: SvgPicture.asset(
                     'assets/images/eye_visibility_icon.svg',
                     width: 20.w,
                     height: 20.w,
                     colorFilter: const ColorFilter.mode(
-                      Color(0xFFD6D3D1),
+                      Color(0xFFD6D3D1), // Gray/30 from Figma
                       BlendMode.srcIn,
                     ),
                   ),

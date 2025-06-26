@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/theme/app_theme.dart';
+import '../../../core/routes/app_routes.dart';
 import '../bloc/bloc.dart';
 
 class OnboardingContent {
@@ -73,12 +74,8 @@ class OnboardingView extends StatelessWidget {
     return BlocListener<OnboardingBloc, OnboardingState>(
       listener: (context, state) {
         if (state.status == OnboardingStatus.completed) {
-          // TODO: Navigate to next screen or main app
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Onboarding completed!'),
-            ),
-          );
+          // Navigate to signup screen (create user screen)
+          Navigator.of(context).pushNamed(AppRoutes.signup);
         }
       },
       child: Scaffold(

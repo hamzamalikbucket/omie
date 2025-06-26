@@ -4,8 +4,10 @@ enum AuthenticationStatus {
   initial,
   loading,
   authenticated,
+  unauthenticated,
   error,
   navigatingToEmailSignIn,
+  navigatingToSignUp,
 }
 
 class AuthenticationState extends Equatable {
@@ -23,7 +25,7 @@ class AuthenticationState extends Equatable {
   }) {
     return AuthenticationState(
       status: status ?? this.status,
-      errorMessage: errorMessage,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
