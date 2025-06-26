@@ -69,6 +69,9 @@ abstract class YouthYogaTheme {
   late Color navBarMultipleItems;
   late Color inRange;
   late Color darkShadowColor;
+  late Color cardBackground;
+  late Color cardText;
+  late Color cardAccent;
 
   @Deprecated('Use displaySmallFamily instead')
   String get title1Family => displaySmallFamily;
@@ -263,7 +266,7 @@ class LightModeTheme extends YouthYogaTheme {
   late Color success = const Color(0xFF4CAF50);
   late Color warning = const Color(0xFFFF9800);
   late Color error = const Color(0xFFFF5963);
-  late Color info = const Color(0xFFFFFFFF);
+  late Color info = const Color(0xFFE6FFA9);
   late Color navBarColor = const Color(0xFFF08C51);
   late Color headerColor = const Color(0xFFF9F9F9);
   late Color buttonColor = const Color(0xFFF08C51);
@@ -273,6 +276,10 @@ class LightModeTheme extends YouthYogaTheme {
   late Color navBarMultipleItems = const Color(0x4DF08C51);
   late Color inRange = const Color(0xFFE8F5E8);
   late Color darkShadowColor = const Color(0xFF000000);
+  late Color cardBackground =
+      const Color(0xFFF7F3EF); // Beige background for onboarding cards
+  late Color cardText = const Color(0xFF533630); // Dark brown text for cards
+  late Color cardAccent = const Color(0xFFEBE2D6); // Light beige accent color
 }
 
 class DarkModeTheme extends YouthYogaTheme {
@@ -301,7 +308,7 @@ class DarkModeTheme extends YouthYogaTheme {
   late Color success = const Color(0xFF4CAF50);
   late Color warning = const Color(0xFFFF9800);
   late Color error = const Color(0xFFFF5963);
-  late Color info = const Color(0xFFFFFFFF);
+  late Color info = const Color(0xFFE6FFA9);
   late Color navBarColor = const Color(0xFF2A2A2A);
   late Color buttonColor = const Color(0xFFF08C51);
   late Color navBarSelectedBackground = const Color(0xFFF08C51);
@@ -311,6 +318,11 @@ class DarkModeTheme extends YouthYogaTheme {
   late Color navBarMultipleItems = const Color(0x4DF08C51);
   late Color inRange = const Color(0xFF2D4A3E);
   late Color darkShadowColor = const Color(0xFF000000);
+  late Color cardBackground =
+      const Color(0xFF2A2A2A); // Dark background for onboarding cards
+  late Color cardText =
+      const Color(0xFFFFFFFF); // White text for cards in dark mode
+  late Color cardAccent = const Color(0xFF3A3A3A); // Dark accent color
 }
 
 abstract class Typography {

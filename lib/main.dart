@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: AppConfig.isDebugMode,
               theme: lightTheme.materialTheme,
               darkTheme: darkTheme.materialTheme,
-              themeMode: YouthYogaTheme.themeMode,
+              themeMode: ThemeMode.light,
               initialRoute: AppRoutes.splash,
               onGenerateRoute: AppRoutes.generateRoute,
             );

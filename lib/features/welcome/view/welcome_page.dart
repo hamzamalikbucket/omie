@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/theme/app_theme.dart';
+import '../../../core/routes/app_routes.dart';
 import '../bloc/bloc.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -27,12 +28,8 @@ class WelcomeView extends StatelessWidget {
     return BlocListener<WelcomeBloc, WelcomeState>(
       listener: (context, state) {
         if (state.status == WelcomeStatus.navigatingToHome) {
-          // TODO: Navigate to home or main app screen when implemented
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Welcome! Ready to start your yoga journey.'),
-            ),
-          );
+          // Navigate to onboarding screen
+          Navigator.of(context).pushNamed(AppRoutes.onboarding);
         } else if (state.status == WelcomeStatus.navigatingToSignIn) {
           // Navigate to sign in screen
           // TODO: Implement sign in navigation
@@ -54,7 +51,13 @@ class WelcomeView extends StatelessWidget {
               children: [
                 // Flexible spacer to push content lower without causing overflow
                 Expanded(
-                  child: Container(),
+                  child: Container(
+                    child: Image.asset(
+                      'assets/images/on_boarding.png',
+                      width: 200.w,
+                      height: 200.w,
+                    ),
+                  ),
                 ),
 
                 // Top area with rounded container and ellipse - positioned lower
@@ -85,22 +88,21 @@ class WelcomeView extends StatelessWidget {
                 // Bottom orange container with exact Figma dimensions and layout
                 Container(
                   width: 375.w,
-                  height: 312.h,
+                  height: 250.h,
                   decoration: BoxDecoration(
                     color: theme.primary,
                   ),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       // Content container with exact padding from Figma
                       Container(
                         width: 375.w,
-                        height: 246.h,
+                        height: 120.h,
                         padding: EdgeInsets.only(
                           left: 16.w,
                           right: 16.w,
                           top: 16.h,
-                          bottom: 32.h,
+                          bottom: 0.h,
                         ),
                         child: Column(
                           children: [
@@ -116,7 +118,7 @@ class WelcomeView extends StatelessWidget {
                                     style: theme.headlineLarge.copyWith(
                                       fontSize: 30.sp,
                                       fontWeight: FontWeight.w700,
-                                      color: theme.info,
+                                      color: theme.primaryBackground,
                                       height: 38.h / 30.sp,
                                       letterSpacing: -0.013 * 30.sp,
                                     ),
@@ -142,7 +144,7 @@ class WelcomeView extends StatelessWidget {
                                             height: 20.w,
                                             decoration: BoxDecoration(
                                               color: theme
-                                                  .info, // White background
+                                                  .primaryBackground, // White background
                                               border: Border.all(
                                                 color: theme
                                                     .alternate, // Border color from theme
@@ -169,12 +171,53 @@ class WelcomeView extends StatelessWidget {
                                       SizedBox(
                                         width: 275.w, // Exact width from CSS
                                         height: 16.h, // Exact height from CSS
-                                        child: Text(
-                                          'I agree to the Terms & Conditions and Privacy Policy',
-                                          style: theme.labelSmall.copyWith(
-                                            color: theme.info, // White text
-                                            height: 16.h / 12.sp,
-                                            letterSpacing: -0.005 * 12.sp,
+                                        child: RichText(
+                                          textAlign: TextAlign.center,
+                                          text: TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: 'I agree to the ',
+                                                style:
+                                                    theme.labelSmall.copyWith(
+                                                  color: theme
+                                                      .primaryBackground, // White text
+                                                  height: 16.h / 12.sp,
+                                                  letterSpacing: -0.005 * 12.sp,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: 'Terms & Conditions',
+                                                style:
+                                                    theme.labelSmall.copyWith(
+                                                  fontWeight: FontWeight.w600,
+                                                  color:
+                                                      theme.info, // White text
+                                                  height: 16.h / 12.sp,
+                                                  letterSpacing: -0.005 * 12.sp,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: ' and ',
+                                                style:
+                                                    theme.labelSmall.copyWith(
+                                                  color: theme
+                                                      .primaryBackground, // White text
+                                                  height: 16.h / 12.sp,
+                                                  letterSpacing: -0.005 * 12.sp,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: 'Privacy Policy',
+                                                style:
+                                                    theme.labelSmall.copyWith(
+                                                  fontWeight: FontWeight.w600,
+                                                  color:
+                                                      theme.info, // White text
+                                                  height: 16.h / 12.sp,
+                                                  letterSpacing: -0.005 * 12.sp,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
@@ -186,8 +229,6 @@ class WelcomeView extends StatelessWidget {
                           ],
                         ),
                       ),
-
-                      // gap: 24px from main container CSS
 
                       // Button section with theme system
                       Column(
@@ -203,7 +244,8 @@ class WelcomeView extends StatelessWidget {
                                     .add(const WelcomeGetStarted());
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: theme.info, // White background
+                                backgroundColor:
+                                    theme.primaryBackground, // White background
                                 foregroundColor: theme.primary, // Orange text
                                 padding: EdgeInsets.symmetric(
                                   horizontal: 20.w,
@@ -252,14 +294,29 @@ class WelcomeView extends StatelessWidget {
                             },
                             child: SizedBox(
                               width: double.infinity,
-                              child: Text(
-                                'Already have an account? Sign In.',
-                                style: theme.bodyMedium.copyWith(
-                                  color: theme.info,
-                                  height: 1.43,
-                                  letterSpacing: -0.08,
-                                ),
+                              child: RichText(
                                 textAlign: TextAlign.center,
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'Already have an account? ',
+                                      style: theme.bodyMedium.copyWith(
+                                        color: theme.primaryBackground,
+                                        height: 1.43,
+                                        letterSpacing: -0.08,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: 'Sign In.',
+                                      style: theme.bodyMedium.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        color: theme.info,
+                                        height: 1.43,
+                                        letterSpacing: -0.08,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
