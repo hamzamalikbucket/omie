@@ -5,31 +5,19 @@
             "name": "Development",
             "request": "launch",
             "type": "dart",
-            "program": "lib/main_development.dart",
-            "args": [
-                "--flavor",
-                "development"
-            ]
+            "program": "lib/main_development.dart"
         },
         {
             "name": "Staging",
             "request": "launch",
             "type": "dart",
-            "program": "lib/main_staging.dart",
-            "args": [
-                "--flavor",
-                "staging"
-            ]
+            "program": "lib/main_staging.dart"
         },
         {
             "name": "Production",
             "request": "launch",
             "type": "dart",
-            "program": "lib/main_production.dart",
-            "args": [
-                "--flavor",
-                "production"
-            ]
+            "program": "lib/main_production.dart"
         }
     ]
 } 

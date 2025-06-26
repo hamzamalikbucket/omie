@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../features/splash/view/splash_page.dart';
-import '../../features/counter/view/counter_page.dart';
+import '../../features/welcome/view/welcome_page.dart';
 
 class AppRoutes {
   static const String splash = '/';
-  static const String counter = '/counter';
+  static const String welcome = '/welcome';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -14,9 +14,9 @@ class AppRoutes {
           builder: (_) => const SplashPage(),
           settings: settings,
         );
-      case counter:
+      case welcome:
         return MaterialPageRoute(
-          builder: (_) => const CounterPage(),
+          builder: (_) => const WelcomePage(),
           settings: settings,
         );
       default:

@@ -8,6 +8,9 @@ import 'core/routes/app_routes.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Initialize theme system
+  await YouthYogaTheme.initialize();
+
   // Set default flavor if not set
   if (AppConfig.flavor == Flavor.development) {
     // This will be overridden by flavor-specific main files
@@ -26,12 +29,21 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MaterialApp(
-          title: AppConfig.appName,
-          debugShowCheckedModeBanner: AppConfig.isDebugMode,
-          theme: AppTheme.getTheme(),
-          initialRoute: AppRoutes.splash,
-          onGenerateRoute: AppRoutes.generateRoute,
+        return Builder(
+          builder: (context) {
+            final lightTheme = LightModeTheme();
+            final darkTheme = DarkModeTheme();
+
+            return MaterialApp(
+              title: AppConfig.appName,
+              debugShowCheckedModeBanner: AppConfig.isDebugMode,
+              theme: lightTheme.materialTheme,
+              darkTheme: darkTheme.materialTheme,
+              themeMode: YouthYogaTheme.themeMode,
+              initialRoute: AppRoutes.splash,
+              onGenerateRoute: AppRoutes.generateRoute,
+            );
+          },
         );
       },
     );

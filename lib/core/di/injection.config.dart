@@ -12,7 +12,6 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
-import '../../features/counter/bloc/counter_bloc.dart' as _i818;
 import '../../features/splash/bloc/splash_bloc.dart' as _i480;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -26,7 +25,6 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    gh.factory<_i818.CounterBloc>(() => _i818.CounterBloc());
     gh.factory<_i480.SplashBloc>(() => _i480.SplashBloc());
     return this;
   }

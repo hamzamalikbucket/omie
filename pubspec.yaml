@@ -19,7 +19,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.6.1
+  sdk: ^3.6.0
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -51,6 +51,12 @@ dependencies:
   # Flavors and Environment
   flutter_flavorizr: ^2.2.3
 
+  # Google Fonts for Urbanist
+  google_fonts: ^6.2.1
+
+  # Shared Preferences for theme persistence
+  shared_preferences: ^2.3.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -68,47 +74,36 @@ dev_dependencies:
 
 # Flavor Configuration
 flavorizr:
+  instructions:
+    - assets:downloadIcons
+    - ios:build
+    - ios:xcconfig
+    - ios:buildTargets
+    - ios:schema
   app:
-    android:
-      flavorDimensions: "flavor-type"
     ios:
+      buildConfigurations:
+        Debug: Debug
+        Release: Release
 
   flavors:
     development:
       app:
         name: "Youth Yoga Dev"
-      android:
-        applicationId: "com.youthforyoga.development"
-        firebase:
-          config: ".firebase/development/google-services.json"
       ios:
         bundleId: "com.youthforyoga.development"
-        firebase:
-          config: ".firebase/development/GoogleService-Info.plist"
 
     staging:
       app:
-        name: "Youth Yoga Staging"
-      android:
-        applicationId: "com.youthforyoga.staging"
-        firebase:
-          config: ".firebase/staging/google-services.json"
+        name: "Youth Yoga Staging"  
       ios:
         bundleId: "com.youthforyoga.staging"
-        firebase:
-          config: ".firebase/staging/GoogleService-Info.plist"
 
     production:
       app:
         name: "Youth for Yoga"
-      android:
-        applicationId: "com.youthforyoga"
-        firebase:
-          config: ".firebase/production/google-services.json"
       ios:
         bundleId: "com.youthforyoga"
-        firebase:
-          config: ".firebase/production/GoogleService-Info.plist"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../core/utils/responsive_utils.dart';
-import '../../../core/constants/app_constants.dart';
 import '../../../core/routes/app_routes.dart';
 import '../bloc/splash_bloc.dart';
 import '../bloc/splash_event.dart';
@@ -29,7 +26,7 @@ class SplashView extends StatelessWidget {
     return BlocListener<SplashBloc, SplashState>(
       listener: (context, state) {
         if (state.status == SplashStatus.completed) {
-          Navigator.of(context).pushReplacementNamed(AppRoutes.counter);
+          Navigator.of(context).pushReplacementNamed(AppRoutes.welcome);
         }
       },
       child: Scaffold(
@@ -149,7 +146,7 @@ class SplashView extends StatelessWidget {
           'assets/images/logo.png',
           width: ResponsiveUtils.getResponsiveWidth(200),
           height: ResponsiveUtils.getResponsiveHeight(40),
-          fit: BoxFit.cover,
+          fit: BoxFit.fitHeight,
         ),
       ],
     );
