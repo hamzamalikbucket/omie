@@ -28,16 +28,11 @@ class WelcomeView extends StatelessWidget {
     return BlocListener<WelcomeBloc, WelcomeState>(
       listener: (context, state) {
         if (state.status == WelcomeStatus.navigatingToHome) {
-          // Navigate to onboarding screen
-          Navigator.of(context).pushNamed(AppRoutes.onboarding);
+          // Navigate to authentication screen
+          Navigator.of(context).pushNamed(AppRoutes.authentication);
         } else if (state.status == WelcomeStatus.navigatingToSignIn) {
-          // Navigate to sign in screen
-          // TODO: Implement sign in navigation
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Sign in functionality coming soon!'),
-            ),
-          );
+          // Navigate to authentication screen
+          Navigator.of(context).pushNamed(AppRoutes.authentication);
         }
       },
       child: Scaffold(

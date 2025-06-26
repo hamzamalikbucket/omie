@@ -263,7 +263,7 @@ class LightModeTheme extends YouthYogaTheme {
   late Color accent3 = const Color(0xFFD7D7D7);
   late Color accent4 = const Color(0xFFF3F3F3);
   late Color accent5 = const Color(0xFFFCFCFC);
-  late Color success = const Color(0xFF4CAF50);
+  late Color success = const Color(0xFF9BB167); // Updated success color
   late Color warning = const Color(0xFFFF9800);
   late Color error = const Color(0xFFFF5963);
   late Color info = const Color(0xFFE6FFA9);
@@ -305,7 +305,7 @@ class DarkModeTheme extends YouthYogaTheme {
   late Color accent3 = const Color(0xFF5A5A5A);
   late Color accent4 = const Color(0xFF6A6A6A);
   late Color accent5 = const Color(0xFF7A7A7A);
-  late Color success = const Color(0xFF4CAF50);
+  late Color success = const Color(0xFF9BB167); // Updated success color
   late Color warning = const Color(0xFFFF9800);
   late Color error = const Color(0xFFFF5963);
   late Color info = const Color(0xFFE6FFA9);
@@ -543,7 +543,8 @@ class AppTheme {
   }
 
   static Color get primaryColor => const Color(0xFFF08C51);
-  static Color get successColor => const Color(0xFF4CAF50);
+  static Color get successColor =>
+      const Color(0xFF9BB167); // Updated success color
   static Color get warningColor => const Color(0xFFFF9800);
   static Color get errorColor => const Color(0xFFFF5963);
   static Color get infoColor => const Color(0xFF2196F3);

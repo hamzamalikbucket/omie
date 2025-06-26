@@ -57,6 +57,9 @@ dependencies:
   # Shared Preferences for theme persistence
   shared_preferences: ^2.3.2
 
+  # SVG support for custom icons
+  flutter_svg: ^2.0.9
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -118,6 +121,9 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/images/google_logo.svg
+    - assets/images/apple_logo.svg
+    - assets/images/email_icon.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

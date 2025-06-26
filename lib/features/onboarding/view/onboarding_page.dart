@@ -1,9 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../bloc/bloc.dart';
+
+class OnboardingContent {
+  final String image;
+  final String title;
+  final String description;
+
+  const OnboardingContent({
+    required this.image,
+    required this.title,
+    required this.description,
+  });
+}
+
+const List<OnboardingContent> onboardingPages = [
+  OnboardingContent(
+    image: 'assets/images/on_boarding_one.png',
+    title: 'Take Your Emotions, One Mood At A Time',
+    description:
+        'Easily log your feelings and uncover emotional patterns, with our smart mood tracker.',
+  ),
+  OnboardingContent(
+    image: 'assets/images/on_boarding_two.png',
+    title: 'Track Your Progress',
+    description:
+        'Monitor your yoga journey and see how your practice evolves over time.',
+  ),
+  OnboardingContent(
+    image: 'assets/images/on_boarding_three.png',
+    title: 'Personalized Sessions',
+    description:
+        'Get customized yoga sessions tailored to your skill level and goals.',
+  ),
+  OnboardingContent(
+    image: 'assets/images/on_boarding_four.png',
+    title: 'Community Support',
+    description:
+        'Connect with like-minded yogis and share your wellness journey.',
+  ),
+  OnboardingContent(
+    image: 'assets/images/on_boarding_fifth.png',
+    title: 'Daily Gratitude & Quote Inspirations',
+    description:
+        'Start and end your day with positivity and thankfulness. One gratitude at a time.',
+  ),
+];
 
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key});
@@ -97,47 +143,53 @@ class OnboardingView extends StatelessWidget {
                         ),
                         child: Column(
                           children: [
-                            // Title and description
-                            Column(
-                              children: [
-                                SizedBox(
-                                  width: 343.w,
-                                  height: 38.h,
-                                  child: Text(
-                                    'Take Your Emotions, One Mood At A Time',
-                                    style: theme.headlineLarge.copyWith(
-                                      fontSize: 30.sp,
-                                      fontWeight: FontWeight.w700,
-                                      color: theme.primaryBackground,
-                                      height: 38.h / 30.sp,
-                                      letterSpacing: -0.013 * 30.sp,
+                            // Title and description - Dynamic content based on current page
+                            BlocBuilder<OnboardingBloc, OnboardingState>(
+                              builder: (context, state) {
+                                final currentContent =
+                                    onboardingPages[state.currentPageIndex];
+                                return Column(
+                                  children: [
+                                    SizedBox(
+                                      width: 343.w,
+                                      height: 38.h,
+                                      child: Text(
+                                        currentContent.title,
+                                        style: theme.headlineLarge.copyWith(
+                                          fontSize: 30.sp,
+                                          fontWeight: FontWeight.w700,
+                                          color: theme.primaryBackground,
+                                          height: 38.h / 30.sp,
+                                          letterSpacing: -0.013 * 30.sp,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
 
-                                SizedBox(height: 12.h),
+                                    SizedBox(height: 12.h),
 
-                                // Description text
-                                SizedBox(
-                                  width: 343.w,
-                                  height: 26.h,
-                                  child: Text(
-                                    'Easily log your feelings and uncover emotional patterns, with our smart mood tracker.',
-                                    style: theme.bodyMedium.copyWith(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: theme.primaryBackground,
-                                      height: 1.6,
+                                    // Description text
+                                    SizedBox(
+                                      width: 343.w,
+                                      height: 26.h,
+                                      child: Text(
+                                        currentContent.description,
+                                        style: theme.bodyMedium.copyWith(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w400,
+                                          color: theme.primaryBackground,
+                                          height: 1.6,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
+                                  ],
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -146,7 +198,7 @@ class OnboardingView extends StatelessWidget {
                       // Navigation button section
                       Column(
                         children: [
-                          // Navigation buttons (left/right chevrons)
+                          // Navigation buttons (left/right chevrons) - Figma design
                           SizedBox(
                             width: 343.w,
                             height: 64.h,
@@ -159,46 +211,118 @@ class OnboardingView extends StatelessWidget {
                                       width: 64.w,
                                       height: 64.w,
                                       decoration: BoxDecoration(
-                                        color: theme.primaryBackground,
-                                        shape: BoxShape.circle,
+                                        color: const Color(
+                                            0xFFFFFFFF), // White background from Figma
+                                        borderRadius: BorderRadius.circular(
+                                            9999.r), // Circular shape
                                       ),
-                                      child: IconButton(
-                                        onPressed: state.isFirstPage
-                                            ? null
-                                            : () {
-                                                context.read<OnboardingBloc>().add(
-                                                    const OnboardingPreviousPressed());
-                                              },
-                                        icon: Icon(
-                                          Icons.chevron_left,
-                                          size: 32.w,
-                                          color: state.isFirstPage
-                                              ? theme.alternate
-                                              : theme.primary,
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        child: InkWell(
+                                          borderRadius:
+                                              BorderRadius.circular(9999.r),
+                                          onTap: state.isFirstPage
+                                              ? null
+                                              : () {
+                                                  context
+                                                      .read<OnboardingBloc>()
+                                                      .add(
+                                                          const OnboardingPreviousPressed());
+                                                },
+                                          child: Container(
+                                            width: 64.w,
+                                            height: 64.w,
+                                            padding: EdgeInsets.all(16
+                                                .w), // 16px padding from Figma
+                                            child: state.isFirstPage
+                                                ? SvgPicture.asset(
+                                                    'assets/images/chevron_left.svg',
+                                                    width: 32.w,
+                                                    height: 32.w,
+                                                    colorFilter:
+                                                        ColorFilter.mode(
+                                                      theme.alternate
+                                                          .withOpacity(0.5),
+                                                      BlendMode.srcIn,
+                                                    ),
+                                                  )
+                                                : Padding(
+                                                    padding: EdgeInsets.only(
+                                                        right: 6.w),
+                                                    child: SvgPicture.asset(
+                                                      'assets/images/chevron_left.svg',
+                                                      width: 32.w,
+                                                      height: 32.w,
+                                                      colorFilter:
+                                                          const ColorFilter
+                                                              .mode(
+                                                        Color(
+                                                            0xFFF08C51), // Orange color from Figma
+                                                        BlendMode.srcIn,
+                                                      ),
+                                                    ),
+                                                  ),
+                                          ),
                                         ),
                                       ),
                                     );
                                   },
                                 ),
-                                SizedBox(width: 24.w),
+                                SizedBox(width: 24.w), // 24px gap from Figma
                                 BlocBuilder<OnboardingBloc, OnboardingState>(
                                   builder: (context, state) {
                                     return Container(
                                       width: 64.w,
                                       height: 64.w,
                                       decoration: BoxDecoration(
-                                        color: theme.primaryBackground,
-                                        shape: BoxShape.circle,
+                                        color: const Color(
+                                            0xFFFFFFFF), // White background from Figma
+                                        borderRadius: BorderRadius.circular(
+                                            9999.r), // Circular shape
                                       ),
-                                      child: IconButton(
-                                        onPressed: () {
-                                          context.read<OnboardingBloc>().add(
-                                              const OnboardingNextPressed());
-                                        },
-                                        icon: Icon(
-                                          Icons.chevron_right,
-                                          size: 32.w,
-                                          color: theme.primary,
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        child: InkWell(
+                                          borderRadius:
+                                              BorderRadius.circular(9999.r),
+                                          onTap: () {
+                                            if (state.isLastPage) {
+                                              context.read<OnboardingBloc>().add(
+                                                  const OnboardingCompleted());
+                                            } else {
+                                              context.read<OnboardingBloc>().add(
+                                                  const OnboardingNextPressed());
+                                            }
+                                          },
+                                          child: Container(
+                                            width: 64.w,
+                                            height: 64.w,
+                                            padding: EdgeInsets.all(16
+                                                .w), // 16px padding from Figma
+                                            child: state.isLastPage
+                                                ? Icon(
+                                                    Icons.check,
+                                                    size: 32.w,
+                                                    color: const Color(
+                                                        0xFFF08C51), // Orange color from Figma
+                                                  )
+                                                : Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 6.w),
+                                                    child: SvgPicture.asset(
+                                                      'assets/images/chevron_right.svg',
+                                                      width: 32.w,
+                                                      height: 32.w,
+                                                      colorFilter:
+                                                          const ColorFilter
+                                                              .mode(
+                                                        Color(
+                                                            0xFFF08C51), // Orange color from Figma
+                                                        BlendMode.srcIn,
+                                                      ),
+                                                    ),
+                                                  ),
+                                          ),
                                         ),
                                       ),
                                     );
@@ -208,17 +332,7 @@ class OnboardingView extends StatelessWidget {
                             ),
                           ),
 
-                          SizedBox(height: 24.h),
-
                           // Home indicator (like in Figma)
-                          Container(
-                            width: 134.w,
-                            height: 5.h,
-                            decoration: BoxDecoration(
-                              color: theme.primaryBackground,
-                              borderRadius: BorderRadius.circular(1234.r),
-                            ),
-                          ),
                         ],
                       ),
                     ],
@@ -236,7 +350,7 @@ class OnboardingView extends StatelessWidget {
     return Container(
       width: 375.w,
       height: 48.h,
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 12.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: List.generate(5, (index) {
@@ -261,120 +375,58 @@ class OnboardingView extends StatelessWidget {
   }
 
   Widget _buildDecorativeContainer(YouthYogaTheme theme) {
-    return Container(
-      width: 375.w,
-      padding: EdgeInsets.symmetric(horizontal: 49.w),
+    return SizedBox(
+      width: 500.w,
       child: Center(
         child: SizedBox(
-          width: 276.w,
           height: 482.h,
           child: Stack(
             children: [
-              // Background gradient overlay with opacity
-              Container(
-                width: 276.w,
-                height: 482.h,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      theme.cardText,
-                      theme.cardText.withOpacity(0),
-                    ],
+              // Main container with beige background
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  width: 275.w,
+                  height: 350.h,
+                  decoration: BoxDecoration(
+                    color: theme.cardBackground,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(48.r),
+                      topRight: Radius.circular(48.r),
+                    ),
                   ),
-                  borderRadius: BorderRadius.circular(48.r),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      width: 24.w,
+                      height: 24.w,
+                      alignment: Alignment.topRight,
+                      margin: EdgeInsets.only(top: 16.h, right: 48.w),
+                      decoration: BoxDecoration(
+                        color: theme.accent2,
+                        borderRadius: BorderRadius.circular(48),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-
-              // Main container with beige background
-              Container(
-                width: 276.w,
-                height: 482.h,
-                decoration: BoxDecoration(
-                  color: theme.cardBackground,
-                  borderRadius: BorderRadius.circular(48.r),
-                ),
-                child: Column(
-                  children: [
-                    SizedBox(height: 16.h),
-
-                    // Small rounded indicator
-                    Container(
-                      width: 90.w,
-                      height: 28.h,
-                      decoration: BoxDecoration(
-                        color: theme.cardBackground,
-                        borderRadius: BorderRadius.circular(9999.r),
+              // Dynamic image based on current page
+              BlocBuilder<OnboardingBloc, OnboardingState>(
+                builder: (context, state) {
+                  final currentContent =
+                      onboardingPages[state.currentPageIndex];
+                  return Center(
+                    child: Container(
+                      alignment: Alignment.bottomCenter,
+                      width: 350.w,
+                      height: 350.w,
+                      child: Image.asset(
+                        currentContent.image,
+                        fit: BoxFit.contain,
                       ),
                     ),
-
-                    SizedBox(height: 8.h),
-
-                    // Small ellipse
-                    Container(
-                      width: 12.w,
-                      height: 12.w,
-                      decoration: BoxDecoration(
-                        color: theme.cardAccent,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-
-                    // Expanded content area for the illustration/content
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.all(20.w),
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // Placeholder for illustration - you can replace with actual image
-                              Container(
-                                width: 120.w,
-                                height: 120.w,
-                                decoration: BoxDecoration(
-                                  color: theme.cardAccent,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  Icons.mood,
-                                  size: 60.w,
-                                  color: theme.primary,
-                                ),
-                              ),
-
-                              SizedBox(height: 20.h),
-
-                              Text(
-                                'Mood Tracking',
-                                style: theme.headlineSmall.copyWith(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: theme.cardText,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-
-                              SizedBox(height: 8.h),
-
-                              Text(
-                                'Track your daily emotions and discover patterns in your mental wellness journey.',
-                                style: theme.bodyMedium.copyWith(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: theme.cardText.withOpacity(0.7),
-                                ),
-                                textAlign: TextAlign.center,
-                                maxLines: 3,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
             ],
           ),

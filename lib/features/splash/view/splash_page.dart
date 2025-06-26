@@ -46,30 +46,22 @@ class SplashView extends StatelessWidget {
           ),
           child: Stack(
             children: [
-              // Background decorative elements
-              _buildDecorativeElement(
+              // Top-left triangular decorative element pointing toward center
+              _buildTriangularDecorativeElement(
                 context,
-                top: ResponsiveUtils.getResponsiveHeight(491),
-                left: ResponsiveUtils.getResponsiveWidth(198),
-              ),
-              _buildDecorativeElement(
-                context,
-                top: ResponsiveUtils.getResponsiveHeight(-209),
-                left: ResponsiveUtils.getResponsiveWidth(-209),
+                top: ResponsiveUtils.getResponsiveHeight(-50),
+                left: ResponsiveUtils.getResponsiveWidth(-140),
+                rotation: 90,
+                isTopLeft: true,
               ),
 
-              // Additional decorative containers from Figma
-              _buildDecorativeContainer(
+              // Bottom-right triangular decorative element pointing toward center
+              _buildTriangularDecorativeElement(
                 context,
-                top: ResponsiveUtils.getResponsiveHeight(491),
-                left: ResponsiveUtils.getResponsiveWidth(198),
-                rotation: 0,
-              ),
-              _buildDecorativeContainer(
-                context,
-                top: ResponsiveUtils.getResponsiveHeight(367),
-                left: ResponsiveUtils.getResponsiveWidth(213),
-                rotation: 180,
+                top: ResponsiveUtils.getResponsiveHeight(562), // 812 - 300 + 50
+                left: ResponsiveUtils.getResponsiveWidth(129), // 379 - 300 + 50
+                rotation: 320,
+                isTopLeft: false,
               ),
 
               // Animated logos and branding
@@ -85,27 +77,35 @@ class SplashView extends StatelessWidget {
     );
   }
 
-  Widget _buildDecorativeElement(BuildContext context,
-      {double? top, double? left}) {
+  Widget _buildTriangularDecorativeElement(
+    BuildContext context, {
+    required double top,
+    required double left,
+    required double rotation,
+    required bool isTopLeft,
+  }) {
     return Positioned(
       top: top,
       left: left,
-      child: Container(
-        width: ResponsiveUtils.getResponsiveWidth(422),
-        height: ResponsiveUtils.getResponsiveHeight(576),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: const Alignment(-0.228, 0.617),
-            end: const Alignment(1.007, 0.161),
-            stops: const [0.0, 1.0],
-            colors: [
-              const Color(0xFFF7A9A0).withValues(alpha: 0.0), // Transparent
-              const Color(0xFFF08C51)
-                  .withValues(alpha: 0.3), // Semi-transparent orange
-            ],
+      child: Transform.rotate(
+        angle: rotation * (3.14159 / 180), // Convert degrees to radians
+        child: ClipPath(
+          clipper: CenterPointingTriangleClipper(isTopLeft: isTopLeft),
+          child: Container(
+            width: ResponsiveUtils.getResponsiveWidth(200),
+            height: ResponsiveUtils.getResponsiveHeight(400),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment(-0.228, 0.617), // 110.28 degrees approximation
+                end: Alignment(1.007, 0.161),
+                stops: [0.0, 0.7784],
+                colors: [
+                  Color(0x00F7A9A0), // rgba(247, 169, 160, 0)
+                  Color(0xFFF08C51), // #F08C51
+                ],
+              ),
+            ),
           ),
-          borderRadius:
-              BorderRadius.circular(ResponsiveUtils.getResponsiveWidth(20)),
         ),
       ),
     );
@@ -151,36 +151,35 @@ class SplashView extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget _buildDecorativeContainer(
-    BuildContext context, {
-    required double top,
-    required double left,
-    required double rotation,
-  }) {
-    return Positioned(
-      top: top,
-      left: left,
-      child: Transform.rotate(
-        angle: rotation * (3.14159 / 180), // Convert degrees to radians
-        child: Container(
-          width: ResponsiveUtils.getResponsiveWidth(422),
-          height: ResponsiveUtils.getResponsiveHeight(576),
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment(-0.228, 0.617), // 110.28 degrees approximation
-              end: Alignment(1.007, 0.161),
-              stops: [0.0, 0.7784],
-              colors: [
-                Color(0x00F7A9A0), // rgba(247, 169, 160, 0)
-                Color(0xFFF08C51), // #F08C51
-              ],
-            ),
-            borderRadius:
-                BorderRadius.circular(ResponsiveUtils.getResponsiveWidth(20)),
-          ),
-        ),
-      ),
-    );
+// Custom clipper for creating triangular shapes pointing toward center
+class CenterPointingTriangleClipper extends CustomClipper<Path> {
+  final bool isTopLeft;
+
+  CenterPointingTriangleClipper({required this.isTopLeft});
+
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+
+    if (isTopLeft) {
+      // Top-left triangle pointing toward bottom-right (center)
+      path.moveTo(0, 0); // Top-left corner
+      path.lineTo(size.width, 0); // Top edge
+      path.lineTo(0, size.height); // Left edge
+      path.close(); // Close the path
+    } else {
+      // Bottom-right triangle pointing toward top-left (center)
+      path.moveTo(size.width, size.height); // Bottom-right corner
+      path.lineTo(0, size.height); // Bottom edge
+      path.lineTo(size.width, 0); // Right edge
+      path.close(); // Close the path
+    }
+
+    return path;
   }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
