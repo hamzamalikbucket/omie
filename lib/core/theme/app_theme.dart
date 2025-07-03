@@ -45,6 +45,7 @@ abstract class YouthYogaTheme {
   late Color secondary;
   late Color tertiary;
   late Color alternate;
+  late Color inputBorder;
   late Color primaryText;
   late Color secondaryText;
   late Color primaryBackground;
@@ -252,6 +253,8 @@ class LightModeTheme extends YouthYogaTheme {
   late Color secondary = const Color(0xFF39D2C0);
   late Color tertiary = const Color(0xFFE8F5E8);
   late Color alternate = const Color(0xFFD6D3D1); // Border color from Figma
+  late Color inputBorder =
+      const Color(0xFFAD6359); // Input border color from Figma
   late Color primaryText = const Color(0xFF14181B);
   late Color secondaryText = const Color(0xFF57636C);
   late Color primaryBackground = const Color(0xFFFFFFFF); // White background
@@ -294,6 +297,8 @@ class DarkModeTheme extends YouthYogaTheme {
   late Color secondary = const Color(0xFF39D2C0);
   late Color tertiary = const Color(0xFF2D4A3E);
   late Color alternate = const Color.fromARGB(255, 42, 47, 54);
+  late Color inputBorder =
+      const Color(0xFFAD6359); // Input border color from Figma
   late Color primaryText = const Color(0xFFFFFFFF);
   late Color secondaryText = const Color(0xFFAAAAAA);
   late Color primaryBackground = const Color(0xFF1A1A1A);

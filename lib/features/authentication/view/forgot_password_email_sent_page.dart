@@ -42,6 +42,7 @@ class ForgotPasswordEmailSentView extends StatelessWidget {
               children: [
                 _buildTopNavigation(theme, context),
                 _buildTopNavHeading(theme),
+                _buildSVGImage(theme),
                 _buildMainContent(theme, context),
               ],
             ),
@@ -93,6 +94,14 @@ class ForgotPasswordEmailSentView extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSVGImage(YouthYogaTheme theme) {
+    return SizedBox(
+      width: 375.w,
+      height: 200.h,
+      child: SvgPicture.asset('assets/images/forgot_password_email_sent.svg'),
     );
   }
 

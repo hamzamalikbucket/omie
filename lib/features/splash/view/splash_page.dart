@@ -28,7 +28,8 @@ class SplashView extends StatelessWidget {
     return BlocListener<SplashBloc, SplashState>(
       listener: (context, state) {
         if (state.status == SplashStatus.completed) {
-          Navigator.of(context).pushReplacementNamed(AppRoutes.welcome);
+          Navigator.of(context).pushReplacementNamed(
+              AppRoutes.comprehensiveMentalHealthAssessment);
         }
       },
       child: Scaffold(

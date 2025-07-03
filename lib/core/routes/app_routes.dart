@@ -9,6 +9,10 @@ import '../../features/authentication/view/signup_page.dart';
 import '../../features/authentication/view/forgot_password_page.dart';
 import '../../features/authentication/view/forgot_password_email_page.dart';
 import '../../features/authentication/view/forgot_password_email_sent_page.dart';
+import '../../features/mental_health_assessment/view/comprehensive_mental_health_assessment_page.dart';
+import '../../features/mental_health_assessment/view/height_selection_page.dart';
+import '../../features/mental_health_assessment/view/mental_health_conditions_page.dart';
+import '../../features/mental_health_assessment/view/sleep_level_selection_page.dart';
 
 class AppRoutes {
   static const String splash = '/';
@@ -20,6 +24,11 @@ class AppRoutes {
   static const String forgotPassword = '/forgot-password';
   static const String forgotPasswordEmail = '/forgot-password-email';
   static const String forgotPasswordEmailSent = '/forgot-password-email-sent';
+  static const String comprehensiveMentalHealthAssessment =
+      '/comprehensive-mental-health-assessment';
+  static const String heightSelection = '/height-selection';
+  static const String mentalHealthConditions = '/mental-health-conditions';
+  static const String sleepLevelSelection = '/sleep-level-selection';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -66,6 +75,26 @@ class AppRoutes {
       case forgotPasswordEmailSent:
         return MaterialPageRoute(
           builder: (_) => const ForgotPasswordEmailSentPage(),
+          settings: settings,
+        );
+      case comprehensiveMentalHealthAssessment:
+        return MaterialPageRoute(
+          builder: (_) => const ComprehensiveMentalHealthAssessmentPage(),
+          settings: settings,
+        );
+      case heightSelection:
+        return MaterialPageRoute(
+          builder: (_) => const HeightSelectionPage(),
+          settings: settings,
+        );
+      case mentalHealthConditions:
+        return MaterialPageRoute(
+          builder: (_) => const MentalHealthConditionsPage(),
+          settings: settings,
+        );
+      case sleepLevelSelection:
+        return MaterialPageRoute(
+          builder: (_) => const SleepLevelSelectionPage(),
           settings: settings,
         );
       default:
