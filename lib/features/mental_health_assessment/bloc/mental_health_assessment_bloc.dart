@@ -13,6 +13,14 @@ class MentalHealthAssessmentBloc
     on<WeightValueChanged>(_onWeightValueChanged);
     on<MentalHealthConditionToggled>(_onMentalHealthConditionToggled);
     on<SleepLevelChanged>(_onSleepLevelChanged);
+    on<TimeDedicationChanged>(_onTimeDedicationChanged);
+    on<MeditationTimeChanged>(_onMeditationTimeChanged);
+    on<HappinessItemToggled>(_onHappinessItemToggled);
+    on<StressLevelChanged>(_onStressLevelChanged);
+    on<AvatarSelected>(_onAvatarSelected);
+    on<MentalHealthAssessmentReUploadImageRequested>(_onReUploadImageRequested);
+    on<MentalHealthAssessmentNavigateToAvatarSelection>(
+        _onNavigateToAvatarSelection);
   }
 
   void _onReadyButtonPressed(
@@ -52,5 +60,57 @@ class MentalHealthAssessmentBloc
       SleepLevelChanged event, Emitter<MentalHealthAssessmentState> emit) {
     // [MentalHealthAssessmentBloc] Update selected sleep level
     emit(state.copyWith(selectedSleepLevel: event.sleepLevel));
+  }
+
+  void _onTimeDedicationChanged(
+      TimeDedicationChanged event, Emitter<MentalHealthAssessmentState> emit) {
+    // [MentalHealthAssessmentBloc] Update selected time dedication
+    emit(state.copyWith(selectedTimeDedication: event.timeDedication));
+  }
+
+  void _onMeditationTimeChanged(
+      MeditationTimeChanged event, Emitter<MentalHealthAssessmentState> emit) {
+    // [MentalHealthAssessmentBloc] Update selected meditation time
+    emit(state.copyWith(selectedMeditationTime: event.meditationTime));
+  }
+
+  void _onHappinessItemToggled(
+      HappinessItemToggled event, Emitter<MentalHealthAssessmentState> emit) {
+    // [MentalHealthAssessmentBloc] Toggle happiness item selection
+    final currentItems = Set<String>.from(state.selectedHappinessItems);
+    if (currentItems.contains(event.item)) {
+      currentItems.remove(event.item);
+    } else {
+      currentItems.add(event.item);
+    }
+    emit(state.copyWith(selectedHappinessItems: currentItems));
+  }
+
+  void _onStressLevelChanged(
+      StressLevelChanged event, Emitter<MentalHealthAssessmentState> emit) {
+    // [MentalHealthAssessmentBloc] Update selected stress level
+    emit(state.copyWith(selectedStressLevel: event.stressLevel));
+  }
+
+  void _onAvatarSelected(
+      AvatarSelected event, Emitter<MentalHealthAssessmentState> emit) {
+    // [MentalHealthAssessmentBloc] Update selected avatar
+    emit(state.copyWith(selectedAvatar: event.avatar));
+  }
+
+  void _onReUploadImageRequested(
+      MentalHealthAssessmentReUploadImageRequested event,
+      Emitter<MentalHealthAssessmentState> emit) {
+    // [MentalHealthAssessmentBloc] Handle re-upload image request
+    emit(state.copyWith(
+        status: MentalHealthAssessmentStatus.navigateToImageUpload));
+  }
+
+  void _onNavigateToAvatarSelection(
+      MentalHealthAssessmentNavigateToAvatarSelection event,
+      Emitter<MentalHealthAssessmentState> emit) {
+    // [MentalHealthAssessmentBloc] Navigate to avatar selection page
+    emit(state.copyWith(
+        status: MentalHealthAssessmentStatus.navigateToAvatarSelection));
   }
 }

@@ -50,3 +50,61 @@ class SleepLevelChanged extends MentalHealthAssessmentEvent {
   @override
   List<Object> get props => [sleepLevel];
 }
+
+class TimeDedicationChanged extends MentalHealthAssessmentEvent {
+  const TimeDedicationChanged(this.timeDedication);
+
+  final String timeDedication;
+
+  @override
+  List<Object> get props => [timeDedication];
+}
+
+class MeditationTimeChanged extends MentalHealthAssessmentEvent {
+  const MeditationTimeChanged(this.meditationTime);
+
+  final String meditationTime;
+
+  @override
+  List<Object> get props => [meditationTime];
+}
+
+class HappinessItemToggled extends MentalHealthAssessmentEvent {
+  const HappinessItemToggled(this.item);
+
+  final String item;
+
+  @override
+  List<Object> get props => [item];
+}
+
+class StressLevelChanged extends MentalHealthAssessmentEvent {
+  const StressLevelChanged(this.stressLevel);
+
+  final String stressLevel;
+
+  @override
+  List<Object> get props => [stressLevel];
+}
+
+/// [AvatarSelected] - Event for when user selects an avatar
+class AvatarSelected extends MentalHealthAssessmentEvent {
+  const AvatarSelected(this.avatar);
+
+  final String avatar;
+
+  @override
+  List<Object> get props => [avatar];
+}
+
+/// [MentalHealthAssessmentReUploadImageRequested] - Event for when user wants to re-upload image
+class MentalHealthAssessmentReUploadImageRequested
+    extends MentalHealthAssessmentEvent {
+  const MentalHealthAssessmentReUploadImageRequested();
+}
+
+/// [MentalHealthAssessmentNavigateToAvatarSelection] - Event for navigating to avatar selection
+class MentalHealthAssessmentNavigateToAvatarSelection
+    extends MentalHealthAssessmentEvent {
+  const MentalHealthAssessmentNavigateToAvatarSelection();
+}

@@ -4,6 +4,8 @@ enum MentalHealthAssessmentStatus {
   initial,
   navigateToAssessment,
   showHelp,
+  navigateToImageUpload,
+  navigateToAvatarSelection,
 }
 
 class MentalHealthAssessmentState extends Equatable {
@@ -13,6 +15,12 @@ class MentalHealthAssessmentState extends Equatable {
     this.weightValue = 140,
     this.selectedConditions = const <String>{},
     this.selectedSleepLevel,
+    this.selectedTimeDedication,
+    this.selectedMeditationTime,
+    this.selectedHappinessItems = const <String>{},
+    this.selectedStressLevel,
+    this.selectedAvatar =
+        'avatar_male_profile_2.svg', // Default selected avatar
   });
 
   final MentalHealthAssessmentStatus status;
@@ -20,6 +28,11 @@ class MentalHealthAssessmentState extends Equatable {
   final int weightValue;
   final Set<String> selectedConditions;
   final int? selectedSleepLevel;
+  final String? selectedTimeDedication;
+  final String? selectedMeditationTime;
+  final Set<String> selectedHappinessItems;
+  final String? selectedStressLevel;
+  final String selectedAvatar; // Selected avatar filename
 
   MentalHealthAssessmentState copyWith({
     MentalHealthAssessmentStatus? status,
@@ -27,6 +40,11 @@ class MentalHealthAssessmentState extends Equatable {
     int? weightValue,
     Set<String>? selectedConditions,
     int? selectedSleepLevel,
+    String? selectedTimeDedication,
+    String? selectedMeditationTime,
+    Set<String>? selectedHappinessItems,
+    String? selectedStressLevel,
+    String? selectedAvatar,
   }) {
     return MentalHealthAssessmentState(
       status: status ?? this.status,
@@ -34,10 +52,28 @@ class MentalHealthAssessmentState extends Equatable {
       weightValue: weightValue ?? this.weightValue,
       selectedConditions: selectedConditions ?? this.selectedConditions,
       selectedSleepLevel: selectedSleepLevel ?? this.selectedSleepLevel,
+      selectedTimeDedication:
+          selectedTimeDedication ?? this.selectedTimeDedication,
+      selectedMeditationTime:
+          selectedMeditationTime ?? this.selectedMeditationTime,
+      selectedHappinessItems:
+          selectedHappinessItems ?? this.selectedHappinessItems,
+      selectedStressLevel: selectedStressLevel ?? this.selectedStressLevel,
+      selectedAvatar: selectedAvatar ?? this.selectedAvatar,
     );
   }
 
   @override
-  List<Object?> get props =>
-      [status, weightUnit, weightValue, selectedConditions, selectedSleepLevel];
+  List<Object?> get props => [
+        status,
+        weightUnit,
+        weightValue,
+        selectedConditions,
+        selectedSleepLevel,
+        selectedTimeDedication,
+        selectedMeditationTime,
+        selectedHappinessItems,
+        selectedStressLevel,
+        selectedAvatar,
+      ];
 }

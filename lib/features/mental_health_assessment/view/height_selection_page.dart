@@ -61,8 +61,8 @@ class _HeightSelectionViewState extends State<HeightSelectionView> {
         MentalHealthAssessmentState>(
       listener: (context, state) {
         if (state.status == MentalHealthAssessmentStatus.navigateToAssessment) {
-          // [HeightSelectionPage] Navigate to mental health conditions page
-          Navigator.of(context).pushNamed(AppRoutes.mentalHealthConditions);
+          // [HeightSelectionPage] Navigate to security questions page
+          Navigator.of(context).pushNamed(AppRoutes.securityQuestions);
         }
       },
       child: Scaffold(

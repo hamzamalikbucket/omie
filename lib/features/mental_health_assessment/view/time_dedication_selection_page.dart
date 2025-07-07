@@ -3,47 +3,57 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../core/routes/app_routes.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/routes/app_routes.dart';
 import '../bloc/mental_health_assessment_bloc.dart';
 
-/// [SleepLevelSelectionPage] - Sleep level rating page
-/// This page allows users to rate their sleep level from 1-5
+/// [TimeDedicationSelectionPage] - Time dedication selection page
+/// This page allows users to select how much time they would dedicate daily
 /// as part of the comprehensive mental health assessment flow
-class SleepLevelSelectionPage extends StatelessWidget {
-  const SleepLevelSelectionPage({super.key});
+class TimeDedicationSelectionPage extends StatelessWidget {
+  const TimeDedicationSelectionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => MentalHealthAssessmentBloc(),
-      child: const SleepLevelSelectionView(),
+      child: const TimeDedicationSelectionView(),
     );
   }
 }
 
-/// [SleepLevelSelectionView] - The main view for sleep level selection
-/// Displays a horizontal tab group with sleep level options 1-5
-class SleepLevelSelectionView extends StatelessWidget {
-  const SleepLevelSelectionView({super.key});
+/// [TimeDedicationSelectionView] - The main view for time dedication selection
+/// Displays four time commitment options in a 2x2 grid layout
+class TimeDedicationSelectionView extends StatelessWidget {
+  const TimeDedicationSelectionView({super.key});
 
-  /// Sleep level options with descriptive text
-  static const Map<int, String> _sleepLevelDescriptions = {
-    1: 'Very Poor',
-    2: 'Poor',
-    3: 'Moderate',
-    4: 'Good',
-    5: 'Excellent',
-  };
-
-  /// Sleep duration descriptions for each level
-  static const Map<int, String> _sleepDurationDescriptions = {
-    1: 'I sleep 1 - 2 hours daily',
-    2: 'I sleep 2 - 3 hours daily',
-    3: 'I sleep 4 - 5 hours daily',
-    4: 'I sleep 6 - 7 hours daily',
-    5: 'I sleep 8+ hours daily',
-  };
+  /// Time dedication options with details
+  static const List<TimeDedicationOption> _timeDedicationOptions = [
+    TimeDedicationOption(
+      id: 'less_than_5',
+      title: '< 5 minutes',
+      subtitle: "I don't have time",
+      iconPath: 'assets/images/clock_icon.svg',
+    ),
+    TimeDedicationOption(
+      id: '5_to_10',
+      title: '5 - 10 minutes',
+      subtitle: "I'm a little busy",
+      iconPath: 'assets/images/briefcase_alt_icon.svg',
+    ),
+    TimeDedicationOption(
+      id: '10_to_20',
+      title: '10 - 20 minutes',
+      subtitle: 'I can do a few thing',
+      iconPath: 'assets/images/activity_yoga_icon.svg',
+    ),
+    TimeDedicationOption(
+      id: 'more_than_30',
+      title: '> 30 minutes',
+      subtitle: 'I have all the time ',
+      iconPath: 'assets/images/activity_meditation_icon.svg',
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +62,9 @@ class SleepLevelSelectionView extends StatelessWidget {
     return BlocListener<MentalHealthAssessmentBloc,
         MentalHealthAssessmentState>(
       listener: (context, state) {
-        // [SleepLevelSelectionView] Navigate to time dedication selection page
+        // [TimeDedicationSelectionView] Navigate to happiness selection when continue is pressed
         if (state.status == MentalHealthAssessmentStatus.navigateToAssessment) {
-          Navigator.of(context).pushNamed(AppRoutes.timeDedicationSelection);
+          Navigator.of(context).pushNamed(AppRoutes.happinessSelection);
         }
       },
       child:
@@ -146,7 +156,7 @@ class SleepLevelSelectionView extends StatelessWidget {
               // Skip button
               GestureDetector(
                 onTap: () {
-                  // [SleepLevelSelectionView] Handle skip action - navigate to next step
+                  // [TimeDedicationSelectionView] Handle skip action - navigate to next step
                   // TODO: Handle skip action
                 },
                 child: Text(
@@ -186,7 +196,7 @@ class SleepLevelSelectionView extends StatelessWidget {
   }
 
   /// [_buildMainContent] - Builds the main content area with question,
-  /// rating display, tab selector, and description
+  /// time dedication options grid, and continue button
   Widget _buildMainContent(BuildContext context, YouthYogaTheme theme,
       MentalHealthAssessmentState state) {
     return Container(
@@ -198,7 +208,7 @@ class SleepLevelSelectionView extends StatelessWidget {
           SizedBox(height: 0.h),
           // Main question text
           Text(
-            "How would you rate your sleep level?",
+            "How much time would you dedicate daily?",
             style: theme.headlineLarge.copyWith(
               fontSize: 30.sp,
               fontWeight: FontWeight.w700,
@@ -209,8 +219,8 @@ class SleepLevelSelectionView extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 24.h),
-          // Sleep level rating content
-          _buildRatingContent(context, theme, state),
+          // Time dedication options
+          _buildTimeDedicationGrid(context, theme, state),
           const Spacer(),
           // Continue button
           _buildContinueButton(context, theme),
@@ -220,159 +230,170 @@ class SleepLevelSelectionView extends StatelessWidget {
     );
   }
 
-  /// [_buildRatingContent] - Builds the main rating content with
-  /// large number display, tab selector, and description
-  Widget _buildRatingContent(BuildContext context, YouthYogaTheme theme,
+  /// [_buildTimeDedicationGrid] - Builds the 2x2 grid of time dedication options
+  Widget _buildTimeDedicationGrid(BuildContext context, YouthYogaTheme theme,
       MentalHealthAssessmentState state) {
-    // Default to level 3 if none selected (as shown in Figma)
-    final selectedLevel = state.selectedSleepLevel ?? 3;
-
     return Column(
       children: [
-        // Large number and description display
-        _buildRatingDisplay(theme, selectedLevel),
-        SizedBox(height: 32.h),
-        // Horizontal tab group for sleep level selection
-        _buildSleepLevelTabs(context, theme, state),
-        SizedBox(height: 24.h),
-        // Sleep duration description with icon
-        _buildSleepDescription(theme, selectedLevel),
-      ],
-    );
-  }
-
-  /// [_buildRatingDisplay] - Builds the large number and descriptive text
-  Widget _buildRatingDisplay(YouthYogaTheme theme, int level) {
-    return Column(
-      children: [
-        // Large number display
-        Text(
-          level.toString(),
-          style: TextStyle(
-            fontFamily: 'Urbanist',
-            fontSize: 128.sp,
-            fontWeight: FontWeight.w700,
-            color: const Color(0xFFF08C51), // Orange color from Figma
-            height: 1.06,
-            letterSpacing: -0.04 * 128.sp,
-          ),
-          textAlign: TextAlign.center,
+        // First row - 2 options
+        Row(
+          children: [
+            Expanded(
+              child: _buildTimeDedicationOption(
+                context,
+                theme,
+                state,
+                _timeDedicationOptions[0],
+              ),
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: _buildTimeDedicationOption(
+                context,
+                theme,
+                state,
+                _timeDedicationOptions[1],
+              ),
+            ),
+          ],
         ),
         SizedBox(height: 12.h),
-        // Descriptive text
-        Text(
-          _sleepLevelDescriptions[level] ?? 'Moderate',
-          style: theme.headlineLarge.copyWith(
-            fontSize: 30.sp,
-            fontWeight: FontWeight.w400,
-            color: const Color(0xFF57534E), // Gray color
-            height: 1.27,
-            letterSpacing: -0.013 * 30.sp,
-          ),
-          textAlign: TextAlign.center,
+        // Second row - 2 options
+        Row(
+          children: [
+            Expanded(
+              child: _buildTimeDedicationOption(
+                context,
+                theme,
+                state,
+                _timeDedicationOptions[2],
+              ),
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: _buildTimeDedicationOption(
+                context,
+                theme,
+                state,
+                _timeDedicationOptions[3],
+              ),
+            ),
+          ],
         ),
       ],
     );
   }
 
-  /// [_buildSleepLevelTabs] - Builds the horizontal tab group for level selection
-  Widget _buildSleepLevelTabs(BuildContext context, YouthYogaTheme theme,
-      MentalHealthAssessmentState state) {
-    final selectedLevel = state.selectedSleepLevel ?? 3;
+  /// [_buildTimeDedicationOption] - Builds individual time dedication option card
+  Widget _buildTimeDedicationOption(
+    BuildContext context,
+    YouthYogaTheme theme,
+    MentalHealthAssessmentState state,
+    TimeDedicationOption option,
+  ) {
+    final isSelected = state.selectedTimeDedication == option.id;
 
-    return Container(
-      padding: EdgeInsets.all(4.w),
-      decoration: BoxDecoration(
-        color: const Color(0xFFE7E5E4), // Background color from Figma
-        borderRadius: BorderRadius.circular(9999.r),
-      ),
-      child: Row(
-        children: List.generate(5, (index) {
-          final level = index + 1;
-          final isSelected = level == selectedLevel;
-
-          return Expanded(
-            child: GestureDetector(
-              onTap: () {
-                // [SleepLevelSelectionView] Handle sleep level selection
-                context
-                    .read<MentalHealthAssessmentBloc>()
-                    .add(SleepLevelChanged(level));
-              },
-              child: Container(
-                height: 48.h,
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? theme.primaryBackground // White for selected
-                      : Colors.transparent, // Transparent for unselected
-                  borderRadius: BorderRadius.circular(9999.r),
-                  boxShadow: isSelected
-                      ? [
-                          BoxShadow(
-                            color: const Color(0x000f172a).withOpacity(0.02),
-                            offset: const Offset(0, 8),
-                            blurRadius: 16,
-                          ),
-                          BoxShadow(
-                            color: const Color(0x000f172a).withOpacity(0.03),
-                            offset: const Offset(0, 4),
-                            blurRadius: 8,
-                          ),
-                        ]
-                      : null,
-                ),
-                child: Center(
-                  child: Text(
-                    level.toString(),
-                    style: TextStyle(
-                      fontFamily: 'Urbanist',
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      color: isSelected
-                          ? const Color(0xFF292524) // Dark for selected
-                          : const Color(0xFF57534E), // Gray for unselected
-                      height: 1.375,
-                      letterSpacing: -0.007 * 16.sp,
-                    ),
+    return GestureDetector(
+      onTap: () {
+        // [TimeDedicationSelectionView] Handle time dedication selection
+        context
+            .read<MentalHealthAssessmentBloc>()
+            .add(TimeDedicationChanged(option.id));
+      },
+      child: Container(
+        width: 160.w,
+        padding: EdgeInsets.all(12.w),
+        decoration: BoxDecoration(
+          // Background color changes based on selection
+          color: isSelected
+              ? const Color(0xFFF5F7EE) // Light green for selected
+              : theme.primaryBackground, // White for unselected
+          borderRadius: BorderRadius.circular(24.r),
+          border: Border.all(
+            color: isSelected
+                ? const Color(0xFF9BB167) // Green border for selected
+                : const Color(0xFFE5E5E5), // Light gray border for unselected
+            width: 1,
+          ),
+          boxShadow: [
+            // Shadow effect as shown in Figma
+            BoxShadow(
+              color: const Color(0x000f172a).withOpacity(0.02),
+              offset: const Offset(0, 8),
+              blurRadius: 16,
+            ),
+            BoxShadow(
+              color: const Color(0x000f172a).withOpacity(0.03),
+              offset: const Offset(0, 4),
+              blurRadius: 8,
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Icon container
+            Container(
+              width: 48.w,
+              height: 48.w,
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? const Color(
+                        0xFFE9EED9) // Darker green for selected icon background
+                    : const Color(0xFFFAFAF9), // Light gray for unselected
+                borderRadius: BorderRadius.circular(9999.r),
+              ),
+              child: Center(
+                child: SvgPicture.asset(
+                  option.iconPath,
+                  width: 24.w,
+                  height: 24.w,
+                  colorFilter: ColorFilter.mode(
+                    isSelected
+                        ? const Color(0xFF9BB167) // Green for selected
+                        : const Color(0xFF57534E), // Gray for unselected
+                    BlendMode.srcIn,
                   ),
                 ),
               ),
             ),
-          );
-        }),
+            SizedBox(height: 12.h),
+            // Title and subtitle text
+            Column(
+              children: [
+                // Title
+                Text(
+                  option.title,
+                  style: TextStyle(
+                    fontFamily: 'Urbanist',
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: isSelected
+                        ? const Color(0xFF3F4B29) // Dark green for selected
+                        : const Color(0xFF292524), // Dark for unselected
+                    height: 1.375,
+                    letterSpacing: -0.007 * 16.sp,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 4.h),
+                // Subtitle
+                Text(
+                  option.subtitle,
+                  style: TextStyle(
+                    fontFamily: 'Urbanist',
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xFF57534E), // Gray for both states
+                    height: 1.6,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
-    );
-  }
-
-  /// [_buildSleepDescription] - Builds the sleep description with icon
-  Widget _buildSleepDescription(YouthYogaTheme theme, int level) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        // Sleep icon
-        SvgPicture.asset(
-          'assets/images/sleep_zzz_icon.svg',
-          width: 20.w,
-          height: 20.w,
-          colorFilter: const ColorFilter.mode(
-            Color(0xFFA8A29E), // Light gray color
-            BlendMode.srcIn,
-          ),
-        ),
-        SizedBox(width: 8.w),
-        // Sleep duration description
-        Text(
-          _sleepDurationDescriptions[level] ?? 'I sleep 4 - 5 hours daily',
-          style: TextStyle(
-            fontFamily: 'Urbanist',
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w400,
-            color: const Color(0xFF57534E), // Gray color
-            height: 1.375,
-            letterSpacing: -0.007 * 16.sp,
-          ),
-        ),
-      ],
     );
   }
 
@@ -383,7 +404,7 @@ class SleepLevelSelectionView extends StatelessWidget {
       height: 48.h,
       child: ElevatedButton(
         onPressed: () {
-          // [SleepLevelSelectionView] Handle continue action
+          // [TimeDedicationSelectionView] Handle continue action
           context
               .read<MentalHealthAssessmentBloc>()
               .add(const ReadyButtonPressed());
@@ -428,4 +449,19 @@ class SleepLevelSelectionView extends StatelessWidget {
       ),
     );
   }
+}
+
+/// [TimeDedicationOption] - Data class for time dedication options
+class TimeDedicationOption {
+  const TimeDedicationOption({
+    required this.id,
+    required this.title,
+    required this.subtitle,
+    required this.iconPath,
+  });
+
+  final String id;
+  final String title;
+  final String subtitle;
+  final String iconPath;
 }

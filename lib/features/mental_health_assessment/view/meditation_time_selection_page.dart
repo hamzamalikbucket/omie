@@ -3,47 +3,50 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../core/routes/app_routes.dart';
 import '../../../core/theme/app_theme.dart';
 import '../bloc/mental_health_assessment_bloc.dart';
 
-/// [SleepLevelSelectionPage] - Sleep level rating page
-/// This page allows users to rate their sleep level from 1-5
+/// [MeditationTimeSelectionPage] - Meditation time selection page
+/// This page allows users to select their preferred meditation time
 /// as part of the comprehensive mental health assessment flow
-class SleepLevelSelectionPage extends StatelessWidget {
-  const SleepLevelSelectionPage({super.key});
+class MeditationTimeSelectionPage extends StatelessWidget {
+  const MeditationTimeSelectionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => MentalHealthAssessmentBloc(),
-      child: const SleepLevelSelectionView(),
+      child: const MeditationTimeSelectionView(),
     );
   }
 }
 
-/// [SleepLevelSelectionView] - The main view for sleep level selection
-/// Displays a horizontal tab group with sleep level options 1-5
-class SleepLevelSelectionView extends StatelessWidget {
-  const SleepLevelSelectionView({super.key});
+/// [MeditationTimeSelectionView] - The main view for meditation time selection
+/// Displays three meditation time options in a horizontal layout
+class MeditationTimeSelectionView extends StatelessWidget {
+  const MeditationTimeSelectionView({super.key});
 
-  /// Sleep level options with descriptive text
-  static const Map<int, String> _sleepLevelDescriptions = {
-    1: 'Very Poor',
-    2: 'Poor',
-    3: 'Moderate',
-    4: 'Good',
-    5: 'Excellent',
-  };
-
-  /// Sleep duration descriptions for each level
-  static const Map<int, String> _sleepDurationDescriptions = {
-    1: 'I sleep 1 - 2 hours daily',
-    2: 'I sleep 2 - 3 hours daily',
-    3: 'I sleep 4 - 5 hours daily',
-    4: 'I sleep 6 - 7 hours daily',
-    5: 'I sleep 8+ hours daily',
-  };
+  /// Meditation time options with details
+  static const List<MeditationTimeOption> _meditationTimeOptions = [
+    MeditationTimeOption(
+      id: 'morning',
+      title: 'Morning',
+      time: '~08:00 AM',
+      iconPath: 'assets/images/sun_icon.svg',
+    ),
+    MeditationTimeOption(
+      id: 'afternoon',
+      title: 'Afternoon',
+      time: '~02:00 PM',
+      iconPath: 'assets/images/leaf_double_icon.svg',
+    ),
+    MeditationTimeOption(
+      id: 'evening',
+      title: 'Evening',
+      time: '~08:00 PM',
+      iconPath: 'assets/images/moon_icon.svg',
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +55,12 @@ class SleepLevelSelectionView extends StatelessWidget {
     return BlocListener<MentalHealthAssessmentBloc,
         MentalHealthAssessmentState>(
       listener: (context, state) {
-        // [SleepLevelSelectionView] Navigate to time dedication selection page
+        // [MeditationTimeSelectionView] Navigate to next step when continue is pressed
         if (state.status == MentalHealthAssessmentStatus.navigateToAssessment) {
-          Navigator.of(context).pushNamed(AppRoutes.timeDedicationSelection);
+          // TODO: Navigate to next step in assessment flow
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Navigate to next step')),
+          );
         }
       },
       child:
@@ -146,7 +152,7 @@ class SleepLevelSelectionView extends StatelessWidget {
               // Skip button
               GestureDetector(
                 onTap: () {
-                  // [SleepLevelSelectionView] Handle skip action - navigate to next step
+                  // [MeditationTimeSelectionView] Handle skip action - navigate to next step
                   // TODO: Handle skip action
                 },
                 child: Text(
@@ -186,7 +192,7 @@ class SleepLevelSelectionView extends StatelessWidget {
   }
 
   /// [_buildMainContent] - Builds the main content area with question,
-  /// rating display, tab selector, and description
+  /// meditation time options, and continue button
   Widget _buildMainContent(BuildContext context, YouthYogaTheme theme,
       MentalHealthAssessmentState state) {
     return Container(
@@ -198,7 +204,7 @@ class SleepLevelSelectionView extends StatelessWidget {
           SizedBox(height: 0.h),
           // Main question text
           Text(
-            "How would you rate your sleep level?",
+            "What is the best time for you to meditate?",
             style: theme.headlineLarge.copyWith(
               fontSize: 30.sp,
               fontWeight: FontWeight.w700,
@@ -209,8 +215,11 @@ class SleepLevelSelectionView extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 24.h),
-          // Sleep level rating content
-          _buildRatingContent(context, theme, state),
+          // Meditation time options container with fixed height
+          SizedBox(
+            height: 324.h, // Fixed height from Figma
+            child: _buildMeditationTimeOptions(context, theme, state),
+          ),
           const Spacer(),
           // Continue button
           _buildContinueButton(context, theme),
@@ -220,159 +229,153 @@ class SleepLevelSelectionView extends StatelessWidget {
     );
   }
 
-  /// [_buildRatingContent] - Builds the main rating content with
-  /// large number display, tab selector, and description
-  Widget _buildRatingContent(BuildContext context, YouthYogaTheme theme,
+  /// [_buildMeditationTimeOptions] - Builds the meditation time options layout
+  Widget _buildMeditationTimeOptions(BuildContext context, YouthYogaTheme theme,
       MentalHealthAssessmentState state) {
-    // Default to level 3 if none selected (as shown in Figma)
-    final selectedLevel = state.selectedSleepLevel ?? 3;
-
-    return Column(
+    return Stack(
       children: [
-        // Large number and description display
-        _buildRatingDisplay(theme, selectedLevel),
-        SizedBox(height: 32.h),
-        // Horizontal tab group for sleep level selection
-        _buildSleepLevelTabs(context, theme, state),
-        SizedBox(height: 24.h),
-        // Sleep duration description with icon
-        _buildSleepDescription(theme, selectedLevel),
-      ],
-    );
-  }
-
-  /// [_buildRatingDisplay] - Builds the large number and descriptive text
-  Widget _buildRatingDisplay(YouthYogaTheme theme, int level) {
-    return Column(
-      children: [
-        // Large number display
-        Text(
-          level.toString(),
-          style: TextStyle(
-            fontFamily: 'Urbanist',
-            fontSize: 128.sp,
-            fontWeight: FontWeight.w700,
-            color: const Color(0xFFF08C51), // Orange color from Figma
-            height: 1.06,
-            letterSpacing: -0.04 * 128.sp,
+        // First option - Morning (top center)
+        Positioned(
+          left: 92.w,
+          top: 0.h,
+          child: _buildMeditationTimeOption(
+            context,
+            theme,
+            state,
+            _meditationTimeOptions[0],
           ),
-          textAlign: TextAlign.center,
         ),
-        SizedBox(height: 12.h),
-        // Descriptive text
-        Text(
-          _sleepLevelDescriptions[level] ?? 'Moderate',
-          style: theme.headlineLarge.copyWith(
-            fontSize: 30.sp,
-            fontWeight: FontWeight.w400,
-            color: const Color(0xFF57534E), // Gray color
-            height: 1.27,
-            letterSpacing: -0.013 * 30.sp,
+        // Second option - Afternoon (bottom left) - selected state
+        Positioned(
+          left: 0.w,
+          top: 162.h,
+          child: _buildMeditationTimeOption(
+            context,
+            theme,
+            state,
+            _meditationTimeOptions[1],
           ),
-          textAlign: TextAlign.center,
+        ),
+        // Third option - Evening (bottom right)
+        Positioned(
+          left: 180.w,
+          top: 162.h,
+          child: _buildMeditationTimeOption(
+            context,
+            theme,
+            state,
+            _meditationTimeOptions[2],
+          ),
         ),
       ],
     );
   }
 
-  /// [_buildSleepLevelTabs] - Builds the horizontal tab group for level selection
-  Widget _buildSleepLevelTabs(BuildContext context, YouthYogaTheme theme,
-      MentalHealthAssessmentState state) {
-    final selectedLevel = state.selectedSleepLevel ?? 3;
+  /// [_buildMeditationTimeOption] - Builds individual meditation time option card
+  Widget _buildMeditationTimeOption(
+    BuildContext context,
+    YouthYogaTheme theme,
+    MentalHealthAssessmentState state,
+    MeditationTimeOption option,
+  ) {
+    final isSelected = state.selectedMeditationTime == option.id;
 
-    return Container(
-      padding: EdgeInsets.all(4.w),
-      decoration: BoxDecoration(
-        color: const Color(0xFFE7E5E4), // Background color from Figma
-        borderRadius: BorderRadius.circular(9999.r),
-      ),
-      child: Row(
-        children: List.generate(5, (index) {
-          final level = index + 1;
-          final isSelected = level == selectedLevel;
-
-          return Expanded(
-            child: GestureDetector(
-              onTap: () {
-                // [SleepLevelSelectionView] Handle sleep level selection
-                context
-                    .read<MentalHealthAssessmentBloc>()
-                    .add(SleepLevelChanged(level));
-              },
-              child: Container(
-                height: 48.h,
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? theme.primaryBackground // White for selected
-                      : Colors.transparent, // Transparent for unselected
-                  borderRadius: BorderRadius.circular(9999.r),
-                  boxShadow: isSelected
-                      ? [
-                          BoxShadow(
-                            color: const Color(0x000f172a).withOpacity(0.02),
-                            offset: const Offset(0, 8),
-                            blurRadius: 16,
-                          ),
-                          BoxShadow(
-                            color: const Color(0x000f172a).withOpacity(0.03),
-                            offset: const Offset(0, 4),
-                            blurRadius: 8,
-                          ),
-                        ]
-                      : null,
-                ),
-                child: Center(
-                  child: Text(
-                    level.toString(),
-                    style: TextStyle(
-                      fontFamily: 'Urbanist',
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      color: isSelected
-                          ? const Color(0xFF292524) // Dark for selected
-                          : const Color(0xFF57534E), // Gray for unselected
-                      height: 1.375,
-                      letterSpacing: -0.007 * 16.sp,
-                    ),
-                  ),
+    return GestureDetector(
+      onTap: () {
+        // [MeditationTimeSelectionView] Handle meditation time selection
+        context
+            .read<MentalHealthAssessmentBloc>()
+            .add(MeditationTimeChanged(option.id));
+      },
+      child: Container(
+        width: 162.w,
+        height: 162.w,
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          // Background color changes based on selection
+          color: isSelected
+              ? const Color(
+                  0xFFFFEDE2) // Light orange for selected (afternoon in Figma)
+              : const Color(0xFFFFFFFF), // White for unselected
+          borderRadius: BorderRadius.circular(1234.r),
+          border: Border.all(
+            color: isSelected
+                ? const Color(0xFFF08C51) // Orange border for selected
+                : const Color(0xFFE5E5E5), // Light gray border for unselected
+            width: 1,
+          ),
+          boxShadow: [
+            // Shadow effect as shown in Figma
+            BoxShadow(
+              color: const Color(0x000f172a).withOpacity(0.02),
+              offset: const Offset(0, 8),
+              blurRadius: 16,
+            ),
+            BoxShadow(
+              color: const Color(0x000f172a).withOpacity(0.03),
+              offset: const Offset(0, 4),
+              blurRadius: 8,
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Icon container
+            SizedBox(
+              width: 32.w,
+              height: 32.w,
+              child: SvgPicture.asset(
+                option.iconPath,
+                width: 32.w,
+                height: 32.w,
+                colorFilter: ColorFilter.mode(
+                  // Icon color changes based on option and selection
+                  option.id == 'morning'
+                      ? const Color(0xFFFBBF24) // Yellow for sun
+                      : isSelected && option.id == 'afternoon'
+                          ? const Color(
+                              0xFF9BB167) // Green for selected afternoon
+                          : const Color(0xFF533630), // Stone for others
+                  BlendMode.srcIn,
                 ),
               ),
             ),
-          );
-        }),
+            SizedBox(height: 8.h),
+            // Title and time text
+            Column(
+              children: [
+                // Title
+                Text(
+                  option.title,
+                  style: TextStyle(
+                    fontFamily: 'Urbanist',
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xFF533630), // Stone color for all
+                    height: 1.33,
+                    letterSpacing: -0.012 * 24.sp,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                // Time
+                Text(
+                  option.time,
+                  style: TextStyle(
+                    fontFamily: 'Urbanist',
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xFF57534E), // Gray for all
+                    height: 1.375,
+                    letterSpacing: -0.007 * 16.sp,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
-    );
-  }
-
-  /// [_buildSleepDescription] - Builds the sleep description with icon
-  Widget _buildSleepDescription(YouthYogaTheme theme, int level) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        // Sleep icon
-        SvgPicture.asset(
-          'assets/images/sleep_zzz_icon.svg',
-          width: 20.w,
-          height: 20.w,
-          colorFilter: const ColorFilter.mode(
-            Color(0xFFA8A29E), // Light gray color
-            BlendMode.srcIn,
-          ),
-        ),
-        SizedBox(width: 8.w),
-        // Sleep duration description
-        Text(
-          _sleepDurationDescriptions[level] ?? 'I sleep 4 - 5 hours daily',
-          style: TextStyle(
-            fontFamily: 'Urbanist',
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w400,
-            color: const Color(0xFF57534E), // Gray color
-            height: 1.375,
-            letterSpacing: -0.007 * 16.sp,
-          ),
-        ),
-      ],
     );
   }
 
@@ -383,13 +386,13 @@ class SleepLevelSelectionView extends StatelessWidget {
       height: 48.h,
       child: ElevatedButton(
         onPressed: () {
-          // [SleepLevelSelectionView] Handle continue action
+          // [MeditationTimeSelectionView] Handle continue action
           context
               .read<MentalHealthAssessmentBloc>()
               .add(const ReadyButtonPressed());
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: theme.primary, // Orange primary
+          backgroundColor: const Color(0xFFF08C51), // Orange primary from Figma
           foregroundColor: theme.primaryBackground, // White text
           padding: EdgeInsets.symmetric(
             horizontal: 20.w,
@@ -428,4 +431,19 @@ class SleepLevelSelectionView extends StatelessWidget {
       ),
     );
   }
+}
+
+/// [MeditationTimeOption] - Data class for meditation time options
+class MeditationTimeOption {
+  const MeditationTimeOption({
+    required this.id,
+    required this.title,
+    required this.time,
+    required this.iconPath,
+  });
+
+  final String id;
+  final String title;
+  final String time;
+  final String iconPath;
 }

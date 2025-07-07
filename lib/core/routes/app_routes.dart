@@ -13,6 +13,19 @@ import '../../features/mental_health_assessment/view/comprehensive_mental_health
 import '../../features/mental_health_assessment/view/height_selection_page.dart';
 import '../../features/mental_health_assessment/view/mental_health_conditions_page.dart';
 import '../../features/mental_health_assessment/view/sleep_level_selection_page.dart';
+import '../../features/mental_health_assessment/view/time_dedication_selection_page.dart';
+import '../../features/mental_health_assessment/view/meditation_time_selection_page.dart';
+import '../../features/mental_health_assessment/view/happiness_selection_page.dart';
+import '../../features/mental_health_assessment/view/stress_level_selection_page.dart';
+import '../../features/mental_health_assessment/view/profile_setup_page.dart';
+import '../../features/mental_health_assessment/view/general_info_page.dart';
+import '../../features/mental_health_assessment/view/avatar_selection_page.dart';
+import '../../features/mental_health_assessment/view/image_format_error_page.dart';
+import '../../features/mental_health_assessment/view/image_upload_status_page.dart';
+import '../../features/mental_health_assessment/view/security_questions_page.dart';
+import '../../features/mental_health_assessment/view/phone_otp_setup_page.dart';
+import '../../features/mental_health_assessment/view/passcode_verification_page.dart';
+import '../../features/mental_health_assessment/view/faceid_setup_page.dart';
 
 class AppRoutes {
   static const String splash = '/';
@@ -29,12 +42,25 @@ class AppRoutes {
   static const String heightSelection = '/height-selection';
   static const String mentalHealthConditions = '/mental-health-conditions';
   static const String sleepLevelSelection = '/sleep-level-selection';
+  static const String timeDedicationSelection = '/time-dedication-selection';
+  static const String meditationTimeSelection = '/meditation-time-selection';
+  static const String happinessSelection = '/happiness-selection';
+  static const String stressLevelSelection = '/stress-level-selection';
+  static const String profileSetup = '/profile-setup';
+  static const String generalInfo = '/general-info';
+  static const String avatarSelection = '/avatar-selection';
+  static const String imageFormatError = '/image-format-error';
+  static const String imageUploadStatus = '/image-upload-status';
+  static const String securityQuestions = '/security-questions';
+  static const String phoneOtpSetup = '/phone-otp-setup';
+  static const String passcodeVerification = '/passcode-verification';
+  static const String faceIdSetup = '/faceid-setup';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case splash:
         return MaterialPageRoute(
-          builder: (_) => const SplashPage(),
+          builder: (_) => const PasscodeVerificationPage(),
           settings: settings,
         );
       case welcome:
@@ -97,9 +123,74 @@ class AppRoutes {
           builder: (_) => const SleepLevelSelectionPage(),
           settings: settings,
         );
+      case timeDedicationSelection:
+        return MaterialPageRoute(
+          builder: (_) => const TimeDedicationSelectionPage(),
+          settings: settings,
+        );
+      case meditationTimeSelection:
+        return MaterialPageRoute(
+          builder: (_) => const MeditationTimeSelectionPage(),
+          settings: settings,
+        );
+      case happinessSelection:
+        return MaterialPageRoute(
+          builder: (_) => const HappinessSelectionPage(),
+          settings: settings,
+        );
+      case stressLevelSelection:
+        return MaterialPageRoute(
+          builder: (_) => const StressLevelSelectionPage(),
+          settings: settings,
+        );
+      case profileSetup:
+        return MaterialPageRoute(
+          builder: (_) => const ProfileSetupPage(),
+          settings: settings,
+        );
+      case generalInfo:
+        return MaterialPageRoute(
+          builder: (_) => const GeneralInfoPage(),
+          settings: settings,
+        );
+      case avatarSelection:
+        return MaterialPageRoute(
+          builder: (_) => const AvatarSelectionPage(),
+          settings: settings,
+        );
+      case imageFormatError:
+        return MaterialPageRoute(
+          builder: (_) => const ImageFormatErrorPage(),
+          settings: settings,
+        );
+      case imageUploadStatus:
+        return MaterialPageRoute(
+          builder: (_) => const ImageUploadStatusPage(),
+          settings: settings,
+        );
+      case securityQuestions:
+        return MaterialPageRoute(
+          builder: (_) => const SecurityQuestionsPage(),
+          settings: settings,
+        );
+      case phoneOtpSetup:
+        return MaterialPageRoute(
+          builder: (_) => const PhoneOtpSetupPage(),
+          settings: settings,
+        );
+      case passcodeVerification:
+        return MaterialPageRoute(
+          builder: (_) => const PasscodeVerificationPage(),
+          settings: settings,
+        );
+      case faceIdSetup:
+        return MaterialPageRoute(
+          builder: (_) => const FaceIdSetupPage(),
+          settings: settings,
+        );
       default:
         return MaterialPageRoute(
-          builder: (_) => const SplashPage(),
+          builder: (_) => const AvatarSelectionPage(),
           settings: settings,
         );
     }
