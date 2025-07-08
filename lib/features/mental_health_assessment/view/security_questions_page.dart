@@ -245,6 +245,7 @@ class _SecurityQuestionsViewState extends State<SecurityQuestionsView> {
           // Answer input field
           _buildAnswerInput(theme),
           const Spacer(),
+          SizedBox(height: 32.h),
           // Continue button
           _buildContinueButton(context, theme, state),
           SizedBox(height: 32.h),
@@ -466,7 +467,7 @@ class _SecurityQuestionsViewState extends State<SecurityQuestionsView> {
                     ),
                     border: InputBorder.none,
                     contentPadding:
-                        EdgeInsets.symmetric(vertical: 12.h, horizontal: 0),
+                        EdgeInsets.symmetric(vertical: 12.h, horizontal: 10),
                   ),
                   onChanged: (value) {
                     // [_buildAnswerInput] Handle text changes
@@ -474,7 +475,7 @@ class _SecurityQuestionsViewState extends State<SecurityQuestionsView> {
                   },
                 ),
               ),
-              SizedBox(width: 12.w),
+              SizedBox(width: 12.h),
             ],
           ),
         ),

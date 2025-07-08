@@ -60,6 +60,9 @@ dependencies:
   # SVG support for custom icons
   flutter_svg: ^2.0.9
 
+  # Country Picker for selecting countries
+  country_picker: ^2.0.27
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

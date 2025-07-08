@@ -1,3 +1,4 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,9 +34,9 @@ class PhoneOtpSetupView extends StatefulWidget {
 
 class _PhoneOtpSetupViewState extends State<PhoneOtpSetupView> {
   final TextEditingController _phoneController = TextEditingController();
-  final String _selectedCountryCode = '+44';
-  final String _phoneNumber = '(000) 000-0000';
-
+  String _selectedCountryCode = '+44';
+  String _phoneNumber = '(000) 000-0000';
+  Country? _selectedCountry;
   @override
   void dispose() {
     _phoneController.dispose();
@@ -295,74 +296,41 @@ class _PhoneOtpSetupViewState extends State<PhoneOtpSetupView> {
             child: Row(
               children: [
                 // UK Flag
-                Container(
-                  width: 20.w,
-                  height: 20.h,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF0F0F0),
-                    borderRadius: BorderRadius.circular(4.r),
-                  ),
-                  child: Stack(
-                    children: [
-                      // Blue background
-                      Container(
-                        width: 20.w,
-                        height: 20.h,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF0052B4),
-                          borderRadius: BorderRadius.circular(4.r),
-                        ),
-                      ),
-                      // Red crosses
-                      Positioned(
-                        top: 3.57.h,
-                        left: 0,
-                        child: Container(
-                          width: 5.2.w,
-                          height: 3.48.h,
-                          color: const Color(0xFFD80027),
-                        ),
-                      ),
-                      Positioned(
-                        top: 3.57.h,
-                        right: 0,
-                        child: Container(
-                          width: 5.2.w,
-                          height: 3.48.h,
-                          color: const Color(0xFFD80027),
-                        ),
-                      ),
-                      // Center cross
-                      Positioned(
-                        top: 0,
-                        left: 7.69.w,
-                        child: Container(
-                          width: 4.62.w,
-                          height: 20.h,
-                          color: const Color(0xFFD80027),
-                        ),
-                      ),
-                      Positioned(
-                        top: 7.69.h,
-                        left: 0,
-                        child: Container(
-                          width: 20.w,
-                          height: 4.62.h,
-                          color: const Color(0xFFD80027),
-                        ),
-                      ),
-                    ],
-                  ),
+                // Country flag
+
+                Text(
+                  _selectedCountry?.flagEmoji ?? '🇬🇧', // Default to UK flag
+                  style: TextStyle(fontSize: 30.sp),
                 ),
                 SizedBox(width: 6.w),
                 // Chevron down
-                SvgPicture.asset(
-                  'assets/images/chevron_down_icon.svg',
-                  width: 10.w,
-                  height: 10.h,
-                  colorFilter: const ColorFilter.mode(
-                    Color(0xFF57534E), // Gray color
-                    BlendMode.srcIn,
+                GestureDetector(
+                  onTap: () {
+                    // [_buildPhoneInput] Handle country selection
+                    print('[PhoneOtpSetupView] Country selector tapped');
+                    showCountryPicker(
+                      context: context,
+                      showPhoneCode: true,
+                      onSelect: (Country country) {
+                        print('Select country: ${country.displayName}');
+                        _selectedCountryCode = country.displayNameNoCountryCode;
+                        print(_selectedCountryCode);
+                        setState(() {
+                          _selectedCountry = country;
+                          _selectedCountryCode = country.phoneCode;
+                        });
+                        //context.read<MentalHealthAssessmentBloc>().add(CountryCodeChanged(country.displayNameNoCountryCode));
+                      },
+                    );
+                  },
+                  child: SvgPicture.asset(
+                    'assets/images/chevron_down_icon.svg',
+                    width: 10.w,
+                    height: 10.h,
+                    colorFilter: const ColorFilter.mode(
+                      Color(0xFF57534E), // Gray color
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
               ],
@@ -389,8 +357,9 @@ class _PhoneOtpSetupViewState extends State<PhoneOtpSetupView> {
                   SizedBox(width: 6.w),
                   // Phone number text
                   Expanded(
-                    child: Text(
-                      _phoneNumber,
+                    child: TextField(
+                      controller: _phoneController,
+                      keyboardType: TextInputType.phone,
                       style: TextStyle(
                         fontFamily: 'Urbanist',
                         fontSize: 16.sp,
@@ -399,6 +368,20 @@ class _PhoneOtpSetupViewState extends State<PhoneOtpSetupView> {
                         height: 1.375, // 22px line height / 16px font size
                         letterSpacing: -0.007 * 16.sp, // -0.7%
                       ),
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: '(000) 000-0000',
+                        isCollapsed: false,
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 10, // No vertical padding
+                          horizontal: 10, // No horizontal padding
+                        ),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          _phoneNumber = value;
+                        });
+                      },
                     ),
                   ),
                   // Question mark icon

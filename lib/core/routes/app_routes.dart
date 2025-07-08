@@ -24,7 +24,7 @@ import '../../features/mental_health_assessment/view/image_format_error_page.dar
 import '../../features/mental_health_assessment/view/image_upload_status_page.dart';
 import '../../features/mental_health_assessment/view/security_questions_page.dart';
 import '../../features/mental_health_assessment/view/phone_otp_setup_page.dart';
-import '../../features/mental_health_assessment/view/passcode_verification_page.dart';
+/*import '../../features/mental_health_assessment/view/passcode_verification_page.dart';*/
 import '../../features/mental_health_assessment/view/faceid_setup_page.dart';
 
 class AppRoutes {
@@ -60,7 +60,7 @@ class AppRoutes {
     switch (settings.name) {
       case splash:
         return MaterialPageRoute(
-          builder: (_) => const PasscodeVerificationPage(),
+          builder: (_) => const SplashPage(),
           settings: settings,
         );
       case welcome:
@@ -178,11 +178,11 @@ class AppRoutes {
           builder: (_) => const PhoneOtpSetupPage(),
           settings: settings,
         );
-      case passcodeVerification:
+/*      case passcodeVerification:
         return MaterialPageRoute(
           builder: (_) => const PasscodeVerificationPage(),
           settings: settings,
-        );
+        );*/
       case faceIdSetup:
         return MaterialPageRoute(
           builder: (_) => const FaceIdSetupPage(),
