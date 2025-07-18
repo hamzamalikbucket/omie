@@ -7,31 +7,31 @@ import '../../../core/routes/app_routes.dart';
 import '../../../core/theme/app_theme.dart';
 import '../bloc/mental_health_assessment_bloc.dart';
 
-/// [FaceIdSetupPage] - FaceID Setup page
-/// This page allows users to enable FaceID authentication
+/// [BiometricSetupPage] - Biometric Setup page
+/// This page allows users to set up fingerprint authentication
 /// as part of the mental health assessment flow
-class FaceIdSetupPage extends StatelessWidget {
-  const FaceIdSetupPage({super.key});
+class BiometricSetupPage extends StatelessWidget {
+  const BiometricSetupPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => MentalHealthAssessmentBloc(),
-      child: const FaceIdSetupView(),
+      child: const BiometricSetupView(),
     );
   }
 }
 
-/// [FaceIdSetupView] - The main view for FaceID setup
-/// Displays FaceID setup instructions with illustration and action buttons
-class FaceIdSetupView extends StatefulWidget {
-  const FaceIdSetupView({super.key});
+/// [BiometricSetupView] - The main view for biometric setup
+/// Displays fingerprint setup instructions with illustration and action buttons
+class BiometricSetupView extends StatefulWidget {
+  const BiometricSetupView({super.key});
 
   @override
-  State<FaceIdSetupView> createState() => _FaceIdSetupViewState();
+  State<BiometricSetupView> createState() => _BiometricSetupViewState();
 }
 
-class _FaceIdSetupViewState extends State<FaceIdSetupView> {
+class _BiometricSetupViewState extends State<BiometricSetupView> {
   @override
   Widget build(BuildContext context) {
     final theme = YouthYogaTheme.of(context);
@@ -39,10 +39,10 @@ class _FaceIdSetupViewState extends State<FaceIdSetupView> {
     return BlocListener<MentalHealthAssessmentBloc,
         MentalHealthAssessmentState>(
       listener: (context, state) {
-        // [FaceIdSetupView] Handle navigation when FaceID setup is complete
+        // [BiometricSetupView] Handle navigation when biometric setup is complete
         if (state.status == MentalHealthAssessmentStatus.navigateToAssessment) {
-          print('[FaceIdSetupView] Navigate to Data Security Consent');
-          Navigator.of(context).pushNamed(AppRoutes.dataSecurityConsent);
+          print('[BiometricSetupView] Navigate to FaceID setup');
+          Navigator.of(context).pushNamed(AppRoutes.faceIdSetup);
         }
       },
       child:
@@ -93,7 +93,7 @@ class _FaceIdSetupViewState extends State<FaceIdSetupView> {
               GestureDetector(
                 onTap: () {
                   // [_buildTopNavigation] Handle back navigation
-                  print('[FaceIdSetupView] Back button pressed');
+                  print('[BiometricSetupView] Back button pressed');
                   Navigator.of(context).pop();
                 },
                 child: SizedBox(
@@ -150,7 +150,7 @@ class _FaceIdSetupViewState extends State<FaceIdSetupView> {
               GestureDetector(
                 onTap: () {
                   // [_buildTopNavigation] Handle skip action
-                  print('[FaceIdSetupView] Skip button pressed');
+                  print('[BiometricSetupView] Skip button pressed');
                   // TODO: Handle skip action
                 },
                 child: Text(
@@ -190,7 +190,7 @@ class _FaceIdSetupViewState extends State<FaceIdSetupView> {
   }
 
   /// [_buildMainContent] - Builds the main content area with question,
-  /// illustration, description, and action buttons
+  /// illustration, and action buttons
   Widget _buildMainContent(BuildContext context, YouthYogaTheme theme,
       MentalHealthAssessmentState state) {
     return Container(
@@ -202,7 +202,7 @@ class _FaceIdSetupViewState extends State<FaceIdSetupView> {
           SizedBox(height: 0.h),
           // Main question text
           Text(
-            "Would you like to enable FaceID* to sign quickly?",
+            "Biometric Setup",
             style: theme.headlineLarge.copyWith(
               fontSize: 30.sp,
               fontWeight: FontWeight.w700,
@@ -213,8 +213,20 @@ class _FaceIdSetupViewState extends State<FaceIdSetupView> {
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 24.h),
-          // Illustration and description section
-          _buildIllustrationSection(theme),
+          // Subtitle text
+          Text(
+            "Please put your fingerprint on your touch sensor for 5 seconds",
+            style: theme.bodyLarge.copyWith(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w400,
+              color: const Color(0xFF57534E), // Stone/60 from Figma
+              height: 1.6,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 24.h),
+          // Illustration from Figma design
+          _buildIllustration(),
           const Spacer(),
           // Action buttons
           _buildActionButtons(context, theme, state),
@@ -224,44 +236,19 @@ class _FaceIdSetupViewState extends State<FaceIdSetupView> {
     );
   }
 
-  /// [_buildIllustrationSection] - Builds the illustration and description section
-  Widget _buildIllustrationSection(YouthYogaTheme theme) {
-    return Column(
-      children: [
-        // FaceID illustration
-        _buildIllustration(),
-        SizedBox(height: 24.h),
-        // Description text
-        SizedBox(
-          width: 349.w,
-          child: Text(
-            "By using faceID, you agree to the terms and conditions. We'll also require face recognition after 2 minutes of inactivity.",
-            style: theme.bodyLarge.copyWith(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w400,
-              color: const Color(0xFF57534E), // Stone/60 from Figma
-              height: 1.6,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ],
-    );
-  }
-
-  /// [_buildIllustration] - Builds the FaceID illustration image
+  /// [_buildIllustration] - Builds the fingerprint illustration image
   Widget _buildIllustration() {
     return Container(
       width: 343.w,
-      height: 222.h,
+      height: 250.h,
       alignment: Alignment.center,
       child: SizedBox(
-        width: 160.w,
-        height: 160.h,
+        width: 226.11.w,
+        height: 233.25.h,
         child: SvgPicture.asset(
-          'assets/images/faceid_setup_face_illustration.svg',
-          width: 160.w,
-          height: 160.h,
+          'assets/images/biometric_setup_illustration.svg',
+          width: 226.11.w,
+          height: 233.25.h,
           fit: BoxFit.contain,
         ),
       ),
@@ -292,7 +279,7 @@ class _FaceIdSetupViewState extends State<FaceIdSetupView> {
       child: ElevatedButton(
         onPressed: () {
           // [_buildContinueButton] Handle continue action
-          print('[FaceIdSetupView] Continue button pressed');
+          print('[BiometricSetupView] Continue button pressed');
 
           context
               .read<MentalHealthAssessmentBloc>()
@@ -344,12 +331,12 @@ class _FaceIdSetupViewState extends State<FaceIdSetupView> {
   Widget _buildSkipButton(BuildContext context, YouthYogaTheme theme,
       MentalHealthAssessmentState state) {
     return SizedBox(
-      width: double.infinity,
+      width: 342.w,
       child: TextButton(
         onPressed: () {
           // [_buildSkipButton] Handle skip this step action
-          print('[FaceIdSetupView] Skip this step button pressed');
-          // TODO: Navigate to next step or skip FaceID setup
+          print('[BiometricSetupView] Skip this step button pressed');
+          // TODO: Navigate to next step or skip biometric setup
         },
         style: TextButton.styleFrom(
           foregroundColor: const Color(0xFFF08C51), // Orange text

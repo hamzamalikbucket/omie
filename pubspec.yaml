@@ -39,6 +39,7 @@ dependencies:
   flutter_bloc: ^8.1.6
   bloc: ^8.1.4
   equatable: ^2.0.5
+  intl: ^0.20.2
 
   # Responsive Design
   flutter_screenutil: ^5.9.3

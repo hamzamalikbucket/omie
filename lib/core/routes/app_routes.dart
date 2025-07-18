@@ -10,12 +10,14 @@ import '../../features/authentication/view/forgot_password_page.dart';
 import '../../features/authentication/view/forgot_password_email_page.dart';
 import '../../features/authentication/view/forgot_password_email_sent_page.dart';
 import '../../features/mental_health_assessment/view/comprehensive_mental_health_assessment_page.dart';
+import '../../features/mental_health_assessment/view/data_security_consent_page.dart';
 import '../../features/mental_health_assessment/view/height_selection_page.dart';
 import '../../features/mental_health_assessment/view/mental_health_conditions_page.dart';
 import '../../features/mental_health_assessment/view/sleep_level_selection_page.dart';
 import '../../features/mental_health_assessment/view/time_dedication_selection_page.dart';
 import '../../features/mental_health_assessment/view/meditation_time_selection_page.dart';
 import '../../features/mental_health_assessment/view/happiness_selection_page.dart';
+import '../../features/mental_health_assessment/view/notification_setup_page.dart';
 import '../../features/mental_health_assessment/view/stress_level_selection_page.dart';
 import '../../features/mental_health_assessment/view/profile_setup_page.dart';
 import '../../features/mental_health_assessment/view/general_info_page.dart';
@@ -24,8 +26,12 @@ import '../../features/mental_health_assessment/view/image_format_error_page.dar
 import '../../features/mental_health_assessment/view/image_upload_status_page.dart';
 import '../../features/mental_health_assessment/view/security_questions_page.dart';
 import '../../features/mental_health_assessment/view/phone_otp_setup_page.dart';
-/*import '../../features/mental_health_assessment/view/passcode_verification_page.dart';*/
+import '../../features/mental_health_assessment/view/passcode_verification_page.dart';
 import '../../features/mental_health_assessment/view/faceid_setup_page.dart';
+import '../../features/mental_health_assessment/view/biometric_setup_page.dart';
+import '../../features/mental_health_assessment/view/home_screen_page.dart';
+import '../../features/mental_health_assessment/view/mental_health_metrics_page.dart';
+import '../../features/mental_health_assessment/view/omie_score_detail_page.dart';
 
 class AppRoutes {
   static const String splash = '/';
@@ -39,12 +45,14 @@ class AppRoutes {
   static const String forgotPasswordEmailSent = '/forgot-password-email-sent';
   static const String comprehensiveMentalHealthAssessment =
       '/comprehensive-mental-health-assessment';
+  static const String dataSecurityConsent = '/data-security-consent';
   static const String heightSelection = '/height-selection';
   static const String mentalHealthConditions = '/mental-health-conditions';
   static const String sleepLevelSelection = '/sleep-level-selection';
   static const String timeDedicationSelection = '/time-dedication-selection';
   static const String meditationTimeSelection = '/meditation-time-selection';
   static const String happinessSelection = '/happiness-selection';
+  static const String notificationSetup = '/notification-setup';
   static const String stressLevelSelection = '/stress-level-selection';
   static const String profileSetup = '/profile-setup';
   static const String generalInfo = '/general-info';
@@ -55,12 +63,16 @@ class AppRoutes {
   static const String phoneOtpSetup = '/phone-otp-setup';
   static const String passcodeVerification = '/passcode-verification';
   static const String faceIdSetup = '/faceid-setup';
+  static const String biometricSetup = '/biometric-setup';
+  static const String homeScreen = '/home-screen';
+  static const String mentalHealthMetrics = '/mental-health-metrics';
+  static const String omieScoreDetail = '/omie-score-detail';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case splash:
         return MaterialPageRoute(
-          builder: (_) => const SplashPage(),
+          builder: (_) => const MentalHealthMetricsPage(),
           settings: settings,
         );
       case welcome:
@@ -108,6 +120,11 @@ class AppRoutes {
           builder: (_) => const ComprehensiveMentalHealthAssessmentPage(),
           settings: settings,
         );
+      case dataSecurityConsent:
+        return MaterialPageRoute(
+          builder: (_) => const DataSecurityConsentPage(),
+          settings: settings,
+        );
       case heightSelection:
         return MaterialPageRoute(
           builder: (_) => const HeightSelectionPage(),
@@ -136,6 +153,11 @@ class AppRoutes {
       case happinessSelection:
         return MaterialPageRoute(
           builder: (_) => const HappinessSelectionPage(),
+          settings: settings,
+        );
+      case notificationSetup:
+        return MaterialPageRoute(
+          builder: (_) => const NotificationSetupPage(),
           settings: settings,
         );
       case stressLevelSelection:
@@ -178,14 +200,34 @@ class AppRoutes {
           builder: (_) => const PhoneOtpSetupPage(),
           settings: settings,
         );
-/*      case passcodeVerification:
+      case passcodeVerification:
         return MaterialPageRoute(
           builder: (_) => const PasscodeVerificationPage(),
           settings: settings,
-        );*/
+        );
       case faceIdSetup:
         return MaterialPageRoute(
           builder: (_) => const FaceIdSetupPage(),
+          settings: settings,
+        );
+      case biometricSetup:
+        return MaterialPageRoute(
+          builder: (_) => const BiometricSetupPage(),
+          settings: settings,
+        );
+      case homeScreen:
+        return MaterialPageRoute(
+          builder: (_) => const HomeScreenPage(),
+          settings: settings,
+        );
+      case mentalHealthMetrics:
+        return MaterialPageRoute(
+          builder: (_) => const MentalHealthMetricsPage(),
+          settings: settings,
+        );
+      case omieScoreDetail:
+        return MaterialPageRoute(
+          builder: (_) => const OmieScoreDetailPage(),
           settings: settings,
         );
       default:

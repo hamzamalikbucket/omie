@@ -92,8 +92,8 @@ class _PasscodeVerificationViewState extends State<PasscodeVerificationView> {
       listener: (context, state) {
         // [PasscodeVerificationView] Handle navigation when verification is successful
         if (state.status == MentalHealthAssessmentStatus.navigateToAssessment) {
-          print('[PasscodeVerificationView] Navigate to FaceID setup');
-          Navigator.of(context).pushNamed(AppRoutes.faceIdSetup);
+          print('[PasscodeVerificationView] Navigate to Biometric setup');
+          Navigator.of(context).pushNamed(AppRoutes.biometricSetup);
         }
       },
       child:
