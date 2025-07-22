@@ -43,8 +43,7 @@ class AppRoutes {
   static const String forgotPassword = '/forgot-password';
   static const String forgotPasswordEmail = '/forgot-password-email';
   static const String forgotPasswordEmailSent = '/forgot-password-email-sent';
-  static const String comprehensiveMentalHealthAssessment =
-      '/comprehensive-mental-health-assessment';
+  static const String comprehensiveMentalHealthAssessment = '/comprehensive-mental-health-assessment';
   static const String dataSecurityConsent = '/data-security-consent';
   static const String heightSelection = '/height-selection';
   static const String mentalHealthConditions = '/mental-health-conditions';
@@ -67,12 +66,13 @@ class AppRoutes {
   static const String homeScreen = '/home-screen';
   static const String mentalHealthMetrics = '/mental-health-metrics';
   static const String omieScoreDetail = '/omie-score-detail';
+  static const String genderSelectionPage = '/omie-score-detail';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case splash:
         return MaterialPageRoute(
-          builder: (_) => const MentalHealthMetricsPage(),
+          builder: (_) => const SplashPage(),
           settings: settings,
         );
       case welcome:

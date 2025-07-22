@@ -28,14 +28,26 @@ class MoodSelectionView extends StatefulWidget {
 
 class _MoodSelectionViewState extends State<MoodSelectionView> {
   String? _selectedMood;
-
+  Color _getMoodHighlightColor(MoodOption mood) {
+    switch (mood.id) {
+      case 'sad':
+        return const Color(0xFFFFF3E0); // Light orange
+      case 'neutral':
+        return const Color(0xFFFFF9C4); // Light yellow
+      case 'happy':
+        return const Color(0xFFF1F8E9); // Light green
+      default:
+        return mood.backgroundColor;
+    }
+  }
   final List<MoodOption> _moodOptions = [
     MoodOption(
       id: 'sad',
       title: 'Sad',
       iconAsset: 'assets/images/sad_emoji_icon.svg',
       backgroundColor: const Color(0xFFFB923C), // Orange background
-      textColor: const Color(0xFFFFFFFF), // White text
+      textColor: const Color(0xFFFFFFFF),
+      hasGlow: false,// White text
     ),
     MoodOption(
       id: 'neutral',
@@ -51,7 +63,8 @@ class _MoodSelectionViewState extends State<MoodSelectionView> {
       title: 'Happy',
       iconAsset: 'assets/images/happy_emoji_icon.svg',
       backgroundColor: const Color(0xFF9BB167), // Green background
-      textColor: const Color(0xFFFFFFFF), // White text
+      textColor: const Color(0xFFFFFFFF),
+      hasGlow: false,// White text
     ),
   ];
 
@@ -73,6 +86,7 @@ class _MoodSelectionViewState extends State<MoodSelectionView> {
         return 'I Feel Neutral.';
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -336,7 +350,7 @@ class _MoodSelectionViewState extends State<MoodSelectionView> {
         width: 95.w,
         height: 104.h,
         decoration: BoxDecoration(
-          color: mood.backgroundColor,
+          color:mood.backgroundColor,
           border: mood.borderColor != null
               ? Border.all(color: mood.borderColor!, width: 1)
               : null,
@@ -353,7 +367,7 @@ class _MoodSelectionViewState extends State<MoodSelectionView> {
               blurRadius: 8,
             ),
             // Add special glow for neutral (selected in Figma)
-            if (mood.hasGlow == true)
+            if (isSelected)
               BoxShadow(
                 color: mood.backgroundColor.withOpacity(1.0),
                 offset: const Offset(0, 5),

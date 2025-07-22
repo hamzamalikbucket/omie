@@ -40,6 +40,7 @@ class _PasscodeVerificationViewState extends State<PasscodeVerificationView> {
   // Error state management
   bool _hasError = false;
   String _errorMessage = "Incorrect passcode! Try again in 20s";
+  String phoneNumber = "+92-3009876678";
 
   // Current passcode values for demonstration (using valid code initially)
   final List<String> _currentValues = ['1', '2', '3', '4'];
@@ -381,7 +382,7 @@ class _PasscodeVerificationViewState extends State<PasscodeVerificationView> {
       children: [
         // Description text
         Text(
-          "We've sent a code to ••9704. Please enter it here to verify your identity.",
+          "We've sent a code to $phoneNumber. Please enter it here to verify your identity.",
           style: TextStyle(
             fontFamily: 'Urbanist',
             fontSize: 16.sp,

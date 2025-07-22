@@ -72,14 +72,14 @@ class AuthenticationView extends StatelessWidget {
 
                 // Main container with circular design element
                 Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: Column(
                     children: [
                       // Circular container section - same pattern as onboarding
                       _buildCircularContainer(theme),
-
                       // Authentication container
                       _buildAuthenticationContainer(theme),
+
                     ],
                   ),
                 ),
@@ -112,7 +112,7 @@ class AuthenticationView extends StatelessWidget {
   Widget _buildCircularContainer(YouthYogaTheme theme) {
     return SizedBox(
       width: 375.w,
-      height: 48.h,
+      height: 42.5.h,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -161,7 +161,7 @@ class AuthenticationView extends StatelessWidget {
                             'How would you like to proceed?',
                             style: theme.headlineLarge.copyWith(
                               fontSize: 24.sp,
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w900,
                               color: theme.primary,
                               height: 1.27,
                               letterSpacing: -0.013 * 24.sp,
@@ -179,14 +179,10 @@ class AuthenticationView extends StatelessWidget {
                       children: [
                         // Google sign in button
                         _buildGoogleSignInButton(theme),
-
                         SizedBox(height: 12.h),
-
                         // Apple sign in button
                         _buildAppleSignInButton(theme),
-
                         SizedBox(height: 12.h),
-
                         // Email sign in button
                         _buildEmailSignInButton(theme),
                       ],
@@ -218,6 +214,7 @@ class AuthenticationView extends StatelessWidget {
                     ),
                   ),
                 ),
+
               ],
             ),
           ),

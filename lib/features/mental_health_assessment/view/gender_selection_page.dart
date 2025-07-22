@@ -5,79 +5,56 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../bloc/mental_health_assessment_bloc.dart';
-import 'health_goal_selection_page.dart';
+import 'weight_selection_page.dart';
 
-class ComprehensiveMentalHealthAssessmentPage extends StatelessWidget {
-  const ComprehensiveMentalHealthAssessmentPage({super.key});
+class GenderSelectionPage extends StatelessWidget {
+  const GenderSelectionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => MentalHealthAssessmentBloc(),
-      child: const ComprehensiveMentalHealthAssessmentView(),
+      child: const GenderSelectionView(),
     );
   }
 }
 
-class ComprehensiveMentalHealthAssessmentView extends StatefulWidget {
-  const ComprehensiveMentalHealthAssessmentView({super.key});
+class GenderSelectionView extends StatefulWidget {
+  const GenderSelectionView({super.key});
 
   @override
-  State<ComprehensiveMentalHealthAssessmentView> createState() =>
-      _ComprehensiveMentalHealthAssessmentViewState();
+  State<GenderSelectionView> createState() => _GenderSelectionViewState();
 }
 
-class _ComprehensiveMentalHealthAssessmentViewState
-    extends State<ComprehensiveMentalHealthAssessmentView> {
-  final TextEditingController _nameController = TextEditingController();
-  final FocusNode _focusNode = FocusNode();
-  bool _hasError = false;
-  bool _isFocused = false;
+class _GenderSelectionViewState extends State<GenderSelectionView> {
+  String? _selectedGender;
+
 
   @override
   void initState() {
     super.initState();
-    _focusNode.addListener(_onFocusChange);
+    _selectedGender = 'neutral'; // Default to neutral as shown in Figma
   }
+  final List<GenderSelectionOption> _genderOptions = [
+    GenderSelectionOption(
+      id: 'Male',
+      title: 'I am Male',
+      iconAsset: 'assets/images/health_plus_icon.svg',
+    ),
+    GenderSelectionOption(
+      id: 'Female',
+      title: 'I am Female',
+      iconAsset: 'assets/images/health_plus_icon.svg',
+    ),
+    GenderSelectionOption(
+      id: 'Other',
+      title: 'I am Other',
+      iconAsset: 'assets/images/health_plus_icon.svg',
+    ),
 
-  void _onFocusChange() {
-    setState(() {
-      _isFocused = _focusNode.hasFocus;
-    });
-  }
+  ];
 
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _focusNode.removeListener(_onFocusChange);
-    _focusNode.dispose();
-    super.dispose();
-  }
 
-  Color _getBorderColor(YouthYogaTheme theme) {
-    if (_hasError) {
-      return theme.error; // Red color for error state
-    } else if (_isFocused) {
-      return theme
-          .primary; // Orange color for active/focused state (same as button)
-    } else {
-      return const Color(0xFFD6D3D1); // Gray color for inactive state
-    }
-  }
-
-  Color _getTextColor(YouthYogaTheme theme) {
-    if (_hasError) {
-      return theme.error; // Red text for error state
-    } else if (_isFocused || _nameController.text.isNotEmpty) {
-      return const Color(0xFF292524); // Dark text when active or has content
-    } else {
-      return const Color(0xFF9CA3AF); // Gray text when inactive
-    }
-  }
-
-  bool _isValidName(String name) {
-    return name.trim().length >= 6; // Minimum 6 characters required
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +66,7 @@ class _ComprehensiveMentalHealthAssessmentViewState
         if (state.status == MentalHealthAssessmentStatus.navigateToAssessment) {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => const HealthGoalSelectionPage(),
+              builder: (context) => const WeightSelectionPage(),
             ),
           );
         }
@@ -151,9 +128,9 @@ class _ComprehensiveMentalHealthAssessmentViewState
                       ),
                       child: Row(
                         children: [
-                          // Filled portion (20% - first step)
+                          // Filled portion (80% - fourth step)
                           Expanded(
-                            flex: 20,
+                            flex: 80,
                             child: Container(
                               decoration: BoxDecoration(
                                 color: const Color(0xFF9BB167), // Success green
@@ -161,9 +138,9 @@ class _ComprehensiveMentalHealthAssessmentViewState
                               ),
                             ),
                           ),
-                          // Unfilled portion (80%)
+                          // Unfilled portion (20%)
                           const Expanded(
-                            flex: 80,
+                            flex: 20,
                             child: SizedBox(),
                           ),
                         ],
@@ -216,14 +193,14 @@ class _ComprehensiveMentalHealthAssessmentViewState
   Widget _buildMainContent(YouthYogaTheme theme) {
     return Container(
       width: 343.w,
-      margin: EdgeInsets.symmetric(horizontal: 16.w),
+      margin: EdgeInsets.symmetric(horizontal: 16.w,vertical: 16.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: 24.h),
           // Main question
           Text(
-            "What's your full legal name?",
+            "What is your gender?",
             style: theme.headlineLarge.copyWith(
               fontSize: 30.sp,
               fontWeight: FontWeight.w700,
@@ -234,135 +211,40 @@ class _ComprehensiveMentalHealthAssessmentViewState
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 24.h),
-          // Input field with different states
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.transparent, // Transparent background
-              border: Border.all(
-                color: _getBorderColor(theme),
-                width: _isFocused ? 2 : 1, // Thicker border when focused
-              ),
-              borderRadius: BorderRadius.circular(9999.r),
+          Text(
+            'For the purpose of regulations please specify your gender truthfully',
+            style: theme.bodyLarge.copyWith(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w400,
+              color: const Color(0xFF57534E), // Stone/60 from Figma
+              height: 1.6,
             ),
-            child: TextFormField(
-              controller: _nameController,
-              focusNode: _focusNode,
-              style: theme.titleMedium.copyWith(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w400,
-                color: _getTextColor(theme),
-                height: 1.78,
-                letterSpacing: -0.012 * 18.sp,
-              ),
-              decoration: InputDecoration(
-                hintText: 'Your Name',
-                hintStyle: theme.titleMedium.copyWith(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFF9CA3AF), // Consistent hint color
-                  height: 1.78,
-                  letterSpacing: -0.012 * 18.sp,
-                ),
-                border: InputBorder.none, // Remove default border
-                enabledBorder: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                focusedErrorBorder: InputBorder.none,
-                filled: false, // No fill color
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 16.w,
-                  vertical: 16.h,
-                ),
-              ),
-              textAlign: TextAlign.center,
-              onChanged: (value) {
-                setState(() {
-                  // Clear error when user reaches minimum characters
-                  if (_hasError && _isValidName(value)) {
-                    _hasError = false;
-                  }
-                  // Set error if less than 6 characters and not empty
-                  else if (value.isNotEmpty && !_isValidName(value)) {
-                    _hasError = true;
-                  }
-                });
-              },
-              validator: (value) {
-                if (value == null || !_isValidName(value)) {
-                  setState(() {
-                    _hasError = true;
-                  });
-                  return 'Name must be at least 6 characters long';
-                }
-                setState(() {
-                  _hasError = false;
-                });
-                return null;
-              },
-            ),
+            textAlign: TextAlign.center,
           ),
-          if (_hasError) ...[
-            SizedBox(height: 8.h),
-            Text(
-              'Name must be at least 6 characters long',
-              style: theme.bodySmall.copyWith(
-                color: theme.error,
-                fontSize: 14.sp,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+          // gender Options
           SizedBox(height: 24.h),
-          // Helper text with icon
-          SizedBox(
-            width: double.infinity,
-            child: Column(
-              children: [
-                SvgPicture.asset(
-                  'assets/images/identity_badge_icon.svg',
-                  width: 24.w,
-                  height: 24.w,
-                  colorFilter: const ColorFilter.mode(
-                    Color(0xFFA8A29E), // Gray color from Figma
-                    BlendMode.srcIn,
-                  ),
-                ),
-                SizedBox(height: 12.h),
-                Text(
-                  'For regulatory purposes, please enter name stated on your state ID.',
-                  style: theme.bodyLarge.copyWith(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w400,
-                    color: const Color(0xFF57534E), // Stone/60 from Figma
-                    height: 1.6,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
+          // Health goal options
+          _buildGenderOptions(theme),
+          SizedBox(height: 24.h),
+          // Selected Gender Buttons
+
           const Spacer(),
           // Continue button
           SizedBox(
             width: double.infinity,
             height: 48.h,
             child: ElevatedButton(
-              onPressed: () {
-                // Validate input before continuing
-                if (!_isValidName(_nameController.text)) {
-                  setState(() {
-                    _hasError = true;
-                  });
-                  return;
-                }
-
+              onPressed: _selectedGender != null
+                  ? () {
                 context
                     .read<MentalHealthAssessmentBloc>()
                     .add(const ReadyButtonPressed());
-              },
+              }
+                  : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: theme.primary, // Orange primary
+                backgroundColor: _selectedGender != null
+                    ? theme.primary
+                    : const Color(0xFFE5E5E5), // Gray when disabled
                 foregroundColor: theme.primaryBackground, // White text
                 padding: EdgeInsets.symmetric(
                   horizontal: 20.w,
@@ -405,4 +287,124 @@ class _ComprehensiveMentalHealthAssessmentViewState
       ),
     );
   }
+
+  //make this view in vertical scrollable
+  // This method
+
+  Widget _buildGenderOptions(YouthYogaTheme theme) {
+    return SingleChildScrollView(
+      child: Column(
+        children: _genderOptions.map((goal) {
+          final isSelected = _selectedGender == goal.id;
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                _selectedGender = goal.id;
+              });
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Container(
+                width:MediaQuery.sizeOf(context).width,
+                height: 104.h,
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? const Color(
+                      0xFFF5F7EE) // Light green background when selected
+                      : theme
+                      .primaryBackground, // White background when not selected
+                  border: Border.all(
+                    color: isSelected
+                        ? const Color(0xFF9BB167) // Green border when selected
+                        : const Color(
+                        0xFFE5E5E5), // Gray border when not selected
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(24.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0x000f172a).withOpacity(0.02),
+                      offset: const Offset(0, 8),
+                      blurRadius: 16,
+                    ),
+                    BoxShadow(
+                      color: const Color(0x000f172a).withOpacity(0.03),
+                      offset: const Offset(0, 4),
+                      blurRadius: 8,
+                    ),
+                 ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              goal.iconAsset,
+                              width: 24.w,
+                              height: 24.w,
+                              colorFilter: ColorFilter.mode(
+                                isSelected
+                                    ? const Color(0xFF9BB167) // Green icon when selected
+                                    : const Color(
+                                    0xFFA8A29E), // Gray icon when not selected
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                            SizedBox(width: 12.w),
+                            Text(
+                              goal.title,
+                              style: theme.bodyLarge.copyWith(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                                color: isSelected
+                                    ? const Color(
+                                    0xFF3F4B29) // Dark green text when selected
+                                    : const Color(
+                                    0xFF57534E), // Gray text when not selected
+                                height: 1.375,
+                                letterSpacing: -0.007 * 16.sp,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Radio<String>(
+                        value: goal.id,
+                        groupValue: _selectedGender,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedGender = value;
+                          });
+                        },
+                        activeColor: const Color(0xFF9BB167), // Green when selected
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
 }
+class GenderSelectionOption {
+  final String id;
+  final String title;
+  final String iconAsset;
+
+  GenderSelectionOption({
+    required this.id,
+    required this.title,
+    required this.iconAsset,
+  });
+}
+
+

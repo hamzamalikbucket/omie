@@ -30,11 +30,13 @@ class SignupView extends StatefulWidget {
 class _SignupViewState extends State<SignupView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
-
+//initialize form key here
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // Password validation states
   bool get _hasMinLength => _passwordController.text.length >= 8;
   bool get _hasNumber => _passwordController.text.contains(RegExp(r'[0-9]'));
@@ -215,26 +217,29 @@ class _SignupViewState extends State<SignupView> {
                 SizedBox(height: 24.h),
 
                 // Form section
-                Column(
-                  children: [
-                    // Email field
-                    _buildEmailField(theme),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      // Email field
+                      _buildEmailField(theme),
 
-                    SizedBox(height: 24.h),
+                      SizedBox(height: 24.h),
 
-                    // Password field with validation
-                    _buildPasswordField(theme),
+                      // Password field with validation
+                      _buildPasswordField(theme),
 
-                    SizedBox(height: 24.h),
+                      SizedBox(height: 24.h),
 
-                    // Confirm password field
-                    _buildConfirmPasswordField(theme),
+                      // Confirm password field
+                      _buildConfirmPasswordField(theme),
 
-                    SizedBox(height: 32.h),
+                      SizedBox(height: 32.h),
 
-                    // Sign up button
-                    _buildSignupButton(theme),
-                  ],
+                      // Sign up button
+                      _buildSignupButton(theme),
+                    ],
+                  ),
                 ),
 
                 SizedBox(height: 16.h),
@@ -322,6 +327,24 @@ class _SignupViewState extends State<SignupView> {
               Expanded(
                 child: TextFormField(
                   controller: _emailController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email address';
+                    }
+                    // Simple email validation regex
+                    final emailRegex = RegExp(
+                        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+                    if (!emailRegex.hasMatch(value)) {
+                      return 'Please enter a valid email address';
+                    }
+                    return null;
+
+                  },
+                  onSaved:(value) {
+
+                    // Save email value if needed
+
+                  },
                   style: theme.bodyLarge.copyWith(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w400,
@@ -343,7 +366,7 @@ class _SignupViewState extends State<SignupView> {
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(vertical: 12.h),
+                    contentPadding: EdgeInsets.symmetric(vertical: 5),
                   ),
                 ),
               ),
@@ -403,6 +426,15 @@ class _SignupViewState extends State<SignupView> {
                       // This will trigger rebuild and update validation bars
                     });
                   },
+                  validator: (value) {
+                    if (_passwordController.text.isEmpty) {
+                      return 'Please enter a password';
+                    }
+                    if (_validationCount < 3) {
+                      return 'Password must meet at least 3 requirements';
+                    }
+                    return null; // Return null if validation passes
+                  },
                   style: theme.bodyLarge.copyWith(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w400,
@@ -424,7 +456,7 @@ class _SignupViewState extends State<SignupView> {
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(vertical: 12.h),
+                    contentPadding: EdgeInsets.symmetric(vertical:5.h),
                   ),
                 ),
               ),
@@ -534,6 +566,15 @@ class _SignupViewState extends State<SignupView> {
                     height: 1.375,
                     letterSpacing: -0.007 * 16.sp,
                   ),
+                  validator: (value){
+                    if (value == null || value.isEmpty) {
+                      return 'Please confirm your password';
+                    }
+                    if (value != _passwordController.text) {
+                      return 'Passwords do not match';
+                    }
+                    return null; // Return null if validation passes
+                  },
                   decoration: InputDecoration(
                     hintText: 'Confirm your password',
                     hintStyle: theme.bodyLarge.copyWith(
@@ -548,7 +589,7 @@ class _SignupViewState extends State<SignupView> {
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(vertical: 12.h),
+                    contentPadding: EdgeInsets.symmetric(vertical: 5.h),
                   ),
                 ),
               ),
@@ -589,7 +630,27 @@ class _SignupViewState extends State<SignupView> {
         child: InkWell(
           borderRadius: BorderRadius.circular(9999.r),
           onTap: () {
-            // Validate form before proceeding
+            //save the form state
+            final form = _formKey.currentState;
+            // Check if the form is valid before saving
+             form!.save();
+            // Trigger form validation
+
+            // Validate the form
+
+            if(form.validate()){
+              print('Form is valid');
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Account created successfully!'),
+                  backgroundColor: Colors.green,
+                ),
+              );
+              Navigator.of(context).pushReplacementNamed(AppRoutes.signin);// Navigate back to authentication screen
+
+            }
+
+ /*           // Validate form before proceeding
             if (_emailController.text.isEmpty) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
@@ -639,7 +700,7 @@ class _SignupViewState extends State<SignupView> {
             );
 
             // Navigate back to authentication screen or main app
-            Navigator.of(context).pop();
+            Navigator.of(context).pop();*/
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),

@@ -29,7 +29,7 @@ class SplashView extends StatelessWidget {
       listener: (context, state) {
         if (state.status == SplashStatus.completed) {
           Navigator.of(context).pushReplacementNamed(
-              AppRoutes.comprehensiveMentalHealthAssessment);
+              AppRoutes.welcome);
         }
       },
       child: Scaffold(
@@ -130,7 +130,7 @@ class SplashView extends StatelessWidget {
             ),
             SizedBox(width: 10),
             Text(
-              'Omni',
+              'Omie',
               style: TextStyle(
                 fontSize: 24.sp,
                 fontWeight: FontWeight.w700,

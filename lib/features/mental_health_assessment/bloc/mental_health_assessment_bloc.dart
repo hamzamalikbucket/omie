@@ -24,10 +24,15 @@ class MentalHealthAssessmentBloc
   }
 
   void _onReadyButtonPressed(
-      ReadyButtonPressed event, Emitter<MentalHealthAssessmentState> emit) {
+
+    ReadyButtonPressed event, Emitter<MentalHealthAssessmentState> emit) {
     emit(state.copyWith(
-        status: MentalHealthAssessmentStatus.navigateToAssessment));
-  }
+    status: MentalHealthAssessmentStatus.navigateToAssessment));
+    emit(state.copyWith(
+    status: MentalHealthAssessmentStatus.initial));
+
+
+    }
 
   void _onNeedHelpButtonPressed(
       NeedHelpButtonPressed event, Emitter<MentalHealthAssessmentState> emit) {

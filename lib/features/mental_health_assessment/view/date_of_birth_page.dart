@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:youth_for_yoga/features/mental_health_assessment/view/gender_selection_page.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../bloc/mental_health_assessment_bloc.dart';
@@ -31,15 +32,20 @@ class _DateOfBirthViewState extends State<DateOfBirthView> {
   FixedExtentScrollController? _dayController;
   FixedExtentScrollController? _yearController;
 
-  int _selectedMonthIndex = 2; // September (index 2)
-  int _selectedDayIndex = 2; // 08 (index 2)
-  int _selectedYearIndex = 2; // 2001 (index 2)
+  int _selectedMonthIndex = 2; // March (index 2)
+  int _selectedDayIndex = 5; // 3 (index 2)
+  int _selectedYearIndex = 180; // 2001 (index 2)
 
-  final List<String> _months = ['Jul', 'Aug', 'Sep', 'Oct', 'Nov'];
+  final List<String> _months = ['Jan','Feb','Mar','Apr','May','Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov','Dec'];
 
-  final List<String> _days = ['06', '07', '08', '09', '10'];
-
-  final List<String> _years = ['1999', '2000', '2001', '2002', '2003'];
+ /* final List<String> _days = ['01','02','03','06', '07', '08', '09', '10'];*/
+  final List<String> _days = [
+    for (int i = 1; i <= 30; i++) i.toString().padLeft(2, '0')
+  ];
+ /* final List<String> _years = ['1999', '2000', '2001', '2002', '2003'];*/
+  final List<String> _years = [
+    for (int i = 1800; i <= 3000; i++) i.toString().padLeft(2, '0')
+  ];
 
   @override
   void initState() {
@@ -76,7 +82,9 @@ class _DateOfBirthViewState extends State<DateOfBirthView> {
         if (state.status == MentalHealthAssessmentStatus.navigateToAssessment) {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => const MoodSelectionPage(),
+              builder: (context) => const GenderSelectionPage(),
+
+              //MoodSelectionPage() // Navigate to MoodSelectionPage
             ),
           );
         }

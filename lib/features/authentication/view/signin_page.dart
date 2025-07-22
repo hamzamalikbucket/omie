@@ -50,6 +50,7 @@ class _SigninViewState extends State<SigninView> {
               backgroundColor: Colors.green,
             ),
           );
+          Navigator.of(context).pushNamed(AppRoutes.comprehensiveMentalHealthAssessment);
         } else if (state.status == SigninStatus.forgotPassword) {
           Navigator.of(context).pushNamed(AppRoutes.forgotPassword);
         } else if (state.status == SigninStatus.googleSignin) {

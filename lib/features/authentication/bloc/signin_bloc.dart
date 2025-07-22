@@ -106,16 +106,16 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
 
     // Simulate API call
     await Future.delayed(const Duration(seconds: 1));
-
+    emit(state.copyWith(status: SigninStatus.success));
     // For demo purposes, show error if password is not 'correct_password'
-    if (state.password != 'Password123!') {
+   /* if (state.password != 'Password123!') {
       emit(state.copyWith(
         status: SigninStatus.error,
         passwordError: 'Incorrect password! Please enter the correct password.',
       ));
     } else {
-      emit(state.copyWith(status: SigninStatus.success));
-    }
+
+    }*/
   }
 
   void _onForgotPasswordPressed(
