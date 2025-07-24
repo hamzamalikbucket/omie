@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
               theme: lightTheme.materialTheme,
               darkTheme: darkTheme.materialTheme,
               themeMode: ThemeMode.light,
-              initialRoute: AppRoutes.splash,
+              initialRoute: AppRoutes.datePickerModal, // Changed for testing
               onGenerateRoute: AppRoutes.generateRoute,
             );
           },

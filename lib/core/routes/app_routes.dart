@@ -32,6 +32,15 @@ import '../../features/mental_health_assessment/view/biometric_setup_page.dart';
 import '../../features/mental_health_assessment/view/home_screen_page.dart';
 import '../../features/mental_health_assessment/view/mental_health_metrics_page.dart';
 import '../../features/mental_health_assessment/view/omie_score_detail_page.dart';
+import '../../features/mental_health_assessment/view/wellness_score_detail_page.dart';
+import '../../features/mental_health_assessment/view/mindfulness_explanation_page.dart';
+import '../../features/mental_health_assessment/view/mindfulness_history_page.dart';
+import '../../features/mental_health_assessment/view/mindfulness_level_details_page.dart';
+import '../../features/mental_health_assessment/view/mindfulness_metrics_overview_page.dart';
+import '../../features/mental_health_assessment/view/mindfulness_insight_page.dart';
+import '../../features/mental_health_assessment/view/mindfulness_logging_page.dart';
+import '../../features/mental_health_assessment/view/mindfulness_goal_settings_page.dart';
+import '../../features/mental_health_assessment/view/date_picker_modal_page.dart';
 
 class AppRoutes {
   static const String splash = '/';
@@ -67,6 +76,16 @@ class AppRoutes {
   static const String homeScreen = '/home-screen';
   static const String mentalHealthMetrics = '/mental-health-metrics';
   static const String omieScoreDetail = '/omie-score-detail';
+  static const String wellnessScoreDetail = '/wellness-score-detail';
+  static const String mindfulnessExplanation = '/mindfulness-explanation';
+  static const String mindfulnessHistory = '/mindfulness-history';
+  static const String mindfulnessLevelDetails = '/mindfulness-level-details';
+  static const String mindfulnessMetricsOverview =
+      '/mindfulness-metrics-overview';
+  static const String mindfulnessInsight = '/mindfulness-insight';
+  static const String mindfulnessLogging = '/mindfulness-logging';
+  static const String mindfulnessGoalSettings = '/mindfulness-goal-settings';
+  static const String datePickerModal = '/date-picker-modal';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -228,6 +247,51 @@ class AppRoutes {
       case omieScoreDetail:
         return MaterialPageRoute(
           builder: (_) => const OmieScoreDetailPage(),
+          settings: settings,
+        );
+      case wellnessScoreDetail:
+        return MaterialPageRoute(
+          builder: (_) => const WellnessScoreDetailPage(),
+          settings: settings,
+        );
+      case mindfulnessExplanation:
+        return MaterialPageRoute(
+          builder: (_) => const MindfulnessExplanationPage(),
+          settings: settings,
+        );
+      case mindfulnessHistory:
+        return MaterialPageRoute(
+          builder: (_) => const MindfulnessHistoryPage(),
+          settings: settings,
+        );
+      case mindfulnessLevelDetails:
+        return MaterialPageRoute(
+          builder: (_) => const MindfulnessLevelDetailsPage(),
+          settings: settings,
+        );
+      case mindfulnessMetricsOverview:
+        return MaterialPageRoute(
+          builder: (_) => const MindfulnessMetricsOverviewPage(),
+          settings: settings,
+        );
+      case mindfulnessInsight:
+        return MaterialPageRoute(
+          builder: (_) => const MindfulnessInsightPage(),
+          settings: settings,
+        );
+      case mindfulnessLogging:
+        return MaterialPageRoute(
+          builder: (_) => const MindfulnessLoggingPage(),
+          settings: settings,
+        );
+      case mindfulnessGoalSettings:
+        return MaterialPageRoute(
+          builder: (_) => const MindfulnessGoalSettingsPage(),
+          settings: settings,
+        );
+      case datePickerModal:
+        return MaterialPageRoute(
+          builder: (_) => const DatePickerModalPage(),
           settings: settings,
         );
       default:

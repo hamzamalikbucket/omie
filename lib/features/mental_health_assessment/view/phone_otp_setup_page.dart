@@ -299,7 +299,8 @@ class _PhoneOtpSetupViewState extends State<PhoneOtpSetupView> {
                 // Country flag
 
                 Text(
-                  _selectedCountry?.flagEmoji ?? '🇬🇧', // Default to UK flag
+                  _selectedCountry?.flagEmoji ??
+                      '🇬🇧', // Default to UK flag
                   style: TextStyle(fontSize: 30.sp),
                 ),
                 SizedBox(width: 6.w),

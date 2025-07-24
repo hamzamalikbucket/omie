@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../core/theme/app_theme.dart';
+import '../../../core/routes/app_routes.dart';
 import '../bloc/mental_health_metrics_bloc.dart';
 
 /// [MentalHealthMetricsPage] - Page wrapper for Mental Health Metrics screen
@@ -204,9 +205,11 @@ class MentalHealthMetricsView extends StatelessWidget {
                   SizedBox(height: 16.h),
                   GestureDetector(
                     onTap: () {
-                      // [_buildFeaturedInsightCard] Navigate to detailed insights
+                      // [_buildFeaturedInsightCard] Navigate to wellness score detail page
                       print(
-                          '[MentalHealthMetricsPage] See Insight button pressed');
+                          '[MentalHealthMetricsPage] See Insight button pressed - navigating to wellness score detail');
+                      Navigator.of(context)
+                          .pushNamed(AppRoutes.wellnessScoreDetail);
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
